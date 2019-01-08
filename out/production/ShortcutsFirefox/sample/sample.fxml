@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane onKeyPressed="#handleLayoutKeyPressed" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemDelete" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <TableView fx:id="tableView" prefHeight="421.0" prefWidth="513.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="tableColumnURLName" text="Name" />
+          <TableColumn fx:id="tableColumnURL" text="Website" />
+            <TableColumn fx:id="tableColumnURLShortcut" text="Shortcut" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>
