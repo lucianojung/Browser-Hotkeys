@@ -19,6 +19,7 @@
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
             </items>
           </Menu>

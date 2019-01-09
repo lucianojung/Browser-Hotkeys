@@ -12,7 +12,7 @@ public class WebsiteLink {
     //+++++++++++++++++++++++++++++++++++++++++++
 
     public WebsiteLink(String urlName, String url, KeyCode keyCode) {
-        this.urlName = (urlName == null) ? "Website" : urlName;
+        this.urlName = (urlName.equals("")) ? "Website" : urlName;
         this.url = (url == null) ? "https://www.google.de" : url;
         this.keyCode = (keyCode == null) ? KeyCode.A : keyCode;
     }

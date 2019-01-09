@@ -60,4 +60,8 @@ public class TableEditView {
     public KeyCode getKeyCode() {
         return keyCode;
     }
+
+    public void setKeyCode(KeyCode keyCode) {
+        this.keyCode = keyCode;
+    }
 }

@@ -27,6 +27,18 @@ public class Controller {
     @FXML
     TableView tableView;
 
+    //++++++++++++++++++++++++++++++++++++
+    //constructor
+    //+++++++++++++++++++++++++++++++++++
+
+    public Controller() {
+        this.model = new Model();
+    }
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //Event Handler
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @FXML
     private void handleMenuItemClose(ActionEvent event) {
         System.exit(0);
@@ -47,12 +59,50 @@ public class Controller {
         do{
             dialog.getDialogPane().setContent(editView.getRoot());
             result = dialog.showAndWait();
-        } while (!checkNewWebsite(editView) && result.isPresent() && result.get().equals(ButtonType.OK));
+
+            if (result.get().equals(ButtonType.CANCEL))
+                return;
+        } while (!checkNewWebsite(editView) || !result.isPresent() || !result.get().equals(ButtonType.OK));
 
         //Add new Website
         WebsiteLink websiteLink = new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode());
         model.getWebsiteLinks().add(websiteLink);
         model.addData(websiteLink);
+    }
+
+    @FXML
+    private void handleMenuItemEdit(ActionEvent event){
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        if (index == -1) return; //nothing choosen
+
+        //add URL
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Add a new Link");
+        dialog.setHeaderText("");
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        TableEditView editView = new TableEditView();
+
+        WebsiteLink websiteLink = model.getWebsiteLinks().get(tableView.getSelectionModel().getSelectedIndex());
+        editView.getTextFieldURLName().setText(websiteLink.getUrlName());
+        editView.getTextFieldURL().setText(websiteLink.getUrl());
+        editView.getTextFieldKeyCode().setText(websiteLink.getKeyCode().toString());
+        editView.setKeyCode(websiteLink.getKeyCode());
+
+        Optional result;
+        do{
+            dialog.getDialogPane().setContent(editView.getRoot());
+            result = dialog.showAndWait();
+
+            if (result.get().equals(ButtonType.CANCEL))
+                return;
+        } while (!checkNewWebsite(editView) || !result.isPresent() || !result.get().equals(ButtonType.OK));
+
+        //Add new Website
+        websiteLink = new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode());
+        model.getWebsiteLinks().set(index, websiteLink);
+        model.saveData(model.getWebsiteLinks());
     }
 
     @FXML
@@ -67,23 +117,9 @@ public class Controller {
         Optional result = alert.showAndWait();
         if (!result.isPresent() || !result.get().equals(ButtonType.OK)) return;
         //else
-        WebsiteLink websiteLink = model.getWebsiteLinks().get(index);
-        String deleteString = websiteLink.getUrlName() + "," + websiteLink.getUrl() + "," + websiteLink.getKeyCode();
-        List<String> dataList = model.loadData();
-
-        Iterator<String> iter = dataList.iterator();
-
-        while (iter.hasNext()) {
-            String dataString = iter.next();
-
-            if (!dataString.equals(deleteString)) continue;
-            //else
-            System.out.println("Remove Website");
-            iter.remove();
-        }
-        model.saveData(model.StringListToWebsiteLinkList(dataList));
-        model.getWebsiteLinks().remove(index);
+        removeWebsite(index);
     }
+
 
     @FXML
     private void handleMenuItemAbout(ActionEvent event) {
@@ -98,27 +134,19 @@ public class Controller {
             }
         }
         /*
-        * load websites
-        * if there are no known website for the Shortcut return
-        * if there is a shortcut look if ControlDown == true
-        * else:
-        * Exit System
-        * All well done
-        */
+         * load websites
+         * if there are no known website for the Shortcut return
+         * if there is a shortcut look if ControlDown == true
+         * else:
+         * Exit System
+         * All well done
+         */
         if(getKeyShortcuts(event)) return;
         if (event.isControlDown()) return;
 
         //else
         System.exit(0);
     }
-    //++++++++++++++++++++++++++++++++++++
-    //constructor
-    //+++++++++++++++++++++++++++++++++++
-
-    public Controller() {
-        this.model = new Model();
-    }
-
     //+++++++++++++++++++++++++++++++++++++
     //after FXML initialize Nodes
     //+++++++++++++++++++++++++++++++++++++
@@ -182,7 +210,25 @@ public class Controller {
         //check for URL
         String url = editView.getTextFieldURL().getText();
         if (url.equals("")) return false;
-        if (!openWebpage(url)) return false;
-        return true;
+        return (openWebpage(url));
+    }
+
+    private void removeWebsite(int index){
+        WebsiteLink websiteLink = model.getWebsiteLinks().get(index);
+        String deleteString = websiteLink.getUrlName() + "," + websiteLink.getUrl() + "," + websiteLink.getKeyCode();
+        List<String> dataList = model.loadData();
+
+        Iterator<String> iter = dataList.iterator();
+
+        while (iter.hasNext()) {
+            String dataString = iter.next();
+
+            if (!dataString.equals(deleteString)) continue;
+            //else
+            System.out.println("Remove Website");
+            iter.remove();
+        }
+        model.saveData(model.StringListToWebsiteLinkList(dataList));
+        model.getWebsiteLinks().remove(index);
     }
 }
