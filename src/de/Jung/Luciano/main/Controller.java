@@ -11,6 +11,8 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -54,7 +56,7 @@ public class Controller {
     }
 
     @FXML
-    private void handleMenuItemDelete(ActionEvent event) {
+    private void handleMenuItemRemove(ActionEvent event) {
         //remove an URL-Link
         int index = tableView.getSelectionModel().getSelectedIndex();
         if (index == -1) return; //nothing choosen
@@ -63,8 +65,24 @@ public class Controller {
         alert.setHeaderText("Want to delete Website: " + tableView.getSelectionModel().getSelectedItems().get(0).toString() + "?");
 
         Optional result = alert.showAndWait();
-        if (result.isPresent() && result.get().equals(ButtonType.OK))
-            model.getWebsiteLinks().remove(index);
+        if (!result.isPresent() || !result.get().equals(ButtonType.OK)) return;
+        //else
+        WebsiteLink websiteLink = model.getWebsiteLinks().get(index);
+        String deleteString = websiteLink.getUrlName() + "," + websiteLink.getUrl() + "," + websiteLink.getKeyCode();
+        List<String> dataList = model.loadData();
+
+        Iterator<String> iter = dataList.iterator();
+
+        while (iter.hasNext()) {
+            String dataString = iter.next();
+
+            if (!dataString.equals(deleteString)) continue;
+            //else
+            System.out.println("Remove Website");
+            iter.remove();
+        }
+        model.saveData(model.StringListToWebsiteLinkList(dataList));
+        model.getWebsiteLinks().remove(index);
     }
 
     @FXML
@@ -116,6 +134,14 @@ public class Controller {
         tableColumnURLShortcut.setCellValueFactory(
                 new PropertyValueFactory<WebsiteLink, KeyCode>("keyCode")
         );
+
+        //load Data
+        List<String> dataList = model.loadData();
+        for (String websiteString : dataList) {
+            String[] strings = websiteString.split(",");
+            WebsiteLink websiteLink = new WebsiteLink(strings[0], strings[1], KeyCode.getKeyCode(strings[2]));
+            model.getWebsiteLinks().add(websiteLink);
+        }
     }
 
     //+++++++++++++++++++++++++++++++++++++

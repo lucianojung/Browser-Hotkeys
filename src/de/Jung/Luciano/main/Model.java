@@ -3,8 +3,11 @@ package de.Jung.Luciano.main;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.input.KeyCode;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,29 +16,19 @@ public class Model {
     private ObservableList<WebsiteLink> WebsiteLinks = FXCollections.observableArrayList();
     private final String fileName = "C:\\Users\\Luciano\\Dropbox\\Privat\\WebsiteLinks\\savedWebsiteLinks.txt";
 
-    public Model() {
-        //Listener
-        WebsiteLinks.addListener((ListChangeListener.Change<? extends WebsiteLink> change) -> {
-            while(change.next()){
-                if(change.wasUpdated()){
-                    System.out.println("Update detected");
-                }
-                else{
-                    for (WebsiteLink remitem : change.getRemoved()) {
-                        System.out.println("Website removed");
-                    }
-                    for (WebsiteLink additem : change.getAddedSubList()) {
-                        System.out.println("Website Added");
-                    }
-                }
-            }
-        });
-        System.out.println(loadData().get(0));
-    }
-
     //++++++++++++++++++++++++++++++++
     //load and save
     //++++++++++++++++++++++++++++++++
+
+    public List<WebsiteLink> StringListToWebsiteLinkList(List<String> dataList){
+        List<WebsiteLink> websiteLinkList = new ArrayList<>();
+        for (String websiteString : dataList) {
+            String[] strings = websiteString.split(",");
+            WebsiteLink websiteLink = new WebsiteLink(strings[0], strings[1], KeyCode.getKeyCode(strings[2]));
+            websiteLinkList.add(websiteLink);
+        }
+        return websiteLinkList;
+    }
 
     public void saveData(List<WebsiteLink> dataBlock) {
         try {
@@ -72,8 +65,9 @@ public class Model {
         try{
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            dataList.add(bufferedReader.readLine());
-
+            for (int i = 0; i < Files.lines(Paths.get(fileName)).count(); i++) {
+                dataList.add(bufferedReader.readLine());
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
