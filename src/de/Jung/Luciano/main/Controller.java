@@ -1,4 +1,4 @@
-package sample;
+package de.Jung.Luciano.main;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,22 +45,26 @@ public class Controller {
         do{
             dialog.getDialogPane().setContent(editView.getRoot());
             result = dialog.showAndWait();
-            System.out.println(result.get().equals(ButtonType.OK));
         } while (!checkNewWebsite(editView) && result.isPresent() && result.get().equals(ButtonType.OK));
 
+        //Add new Website
+        WebsiteLink websiteLink = new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode());
+        model.getWebsiteLinks().add(websiteLink);
+        model.addData(websiteLink);
     }
 
     @FXML
     private void handleMenuItemDelete(ActionEvent event) {
         //remove an URL-Link
-        if (tableView.getSelectionModel().getSelectedIndex() == -1) return; //nothing choosen
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        if (index == -1) return; //nothing choosen
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        String URLName = tableView.getSelectionModel().getSelectedItems().get(0).toString();
-        alert.setHeaderText("Want to delete Website: " + URLName + "?");
+        alert.setHeaderText("Want to delete Website: " + tableView.getSelectionModel().getSelectedItems().get(0).toString() + "?");
+
         Optional result = alert.showAndWait();
         if (result.isPresent() && result.get().equals(ButtonType.OK))
-            model.getWebsiteLinks().remove(tableView.getSelectionModel().getSelectedIndex());
+            model.getWebsiteLinks().remove(index);
     }
 
     @FXML
@@ -148,14 +152,11 @@ public class Controller {
         return false;
     }
 
-    private boolean checkNewWebsite(TableEditView editView) {
-        //check for wrong input or invalid website
-        if (editView.getTextFieldURLName().getText().equals("")) return false;
-        if (editView.getTextFieldURL().getText().equals("")) return false;
-        if (editView.getTextFieldKeyCode().getText().equals("")) return false;
-        if (!openWebpage(editView.getTextFieldURL().getText())) return false;
-        //else: Add new Website
-        model.getWebsiteLinks().add(new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode()));
+    private boolean checkNewWebsite(TableEditView editView) {String urlName = editView.getTextFieldURLName().getText();
+        //check for URL
+        String url = editView.getTextFieldURL().getText();
+        if (url.equals("")) return false;
+        if (!openWebpage(url)) return false;
         return true;
     }
 }

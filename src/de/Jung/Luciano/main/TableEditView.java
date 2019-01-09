@@ -1,4 +1,4 @@
-package sample;
+package de.Jung.Luciano.main;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

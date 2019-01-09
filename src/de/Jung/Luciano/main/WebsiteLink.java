@@ -1,4 +1,4 @@
-package sample;
+package de.Jung.Luciano.main;
 
 import javafx.scene.input.KeyCode;
 
@@ -12,18 +12,9 @@ public class WebsiteLink {
     //+++++++++++++++++++++++++++++++++++++++++++
 
     public WebsiteLink(String urlName, String url, KeyCode keyCode) {
-        System.out.println("create a new URL");
-        this.urlName = urlName;
-        this.url = url;
-        this.keyCode = keyCode;
-    }
-
-    public WebsiteLink(String urlName, String url) {
-        this(urlName, url, null);
-    }
-
-    public WebsiteLink(String url){
-        this(url, url, null);
+        this.urlName = (urlName == null) ? "Website" : urlName;
+        this.url = (url == null) ? "https://www.google.de" : url;
+        this.keyCode = (keyCode == null) ? KeyCode.A : keyCode;
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++
