@@ -1,29 +1,44 @@
 package de.Jung.Luciano.Model;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.input.KeyCode;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
 
-    private ObservableList<WebsiteLink> WebsiteLinks;
+    private ObservableList<WebsiteLink> websiteLinks;
     private String fileName;
-    SimpleDataHandler dataHandler;
+    private SimpleDataHandler dataHandler;
 
     //++++++++++++++++++++++++++++++++
     //contructor
     //++++++++++++++++++++++++++++++++
 
     public Model() {
-        WebsiteLinks = FXCollections.observableArrayList();
-        fileName = "C:\\Users\\Luciano\\Dropbox\\Privat\\WebsiteLinks\\savedWebsiteLinks.txt";
+        websiteLinks = FXCollections.observableArrayList();
+        fileName = "C:\\Users\\Luciano\\Dropbox\\Privat\\websiteLinks\\savedWebsiteLinks.txt";
         dataHandler = new SimpleDataHandler(fileName);
+
+        //Listener
+        websiteLinks.addListener((ListChangeListener.Change<? extends WebsiteLink> change) -> {
+            while(change.next()){
+                if(change.wasRemoved()){
+                    System.out.println("Website removed");
+                    saveData(websiteLinks, true);
+                }
+                else if (change.wasAdded()){
+                    System.out.println("Website Added");
+                    saveData(websiteLinks, true);
+                }
+                else if (change.wasUpdated()){
+                    System.out.println("Update detected");
+                    saveData(websiteLinks, true);
+                }
+            }
+        });
     }
 
 
@@ -59,6 +74,6 @@ public class Model {
     //++++++++++++++++++++++++++++++
 
     public ObservableList<WebsiteLink> getWebsiteLinks() {
-        return WebsiteLinks;
+        return websiteLinks;
     }
 }

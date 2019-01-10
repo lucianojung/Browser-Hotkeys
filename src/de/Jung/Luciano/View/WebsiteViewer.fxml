@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -38,6 +39,15 @@
           <TableColumn fx:id="tableColumnURL" text="Website" />
             <TableColumn fx:id="tableColumnURLShortcut" text="Shortcut" />
         </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
    </center>
 </BorderPane>

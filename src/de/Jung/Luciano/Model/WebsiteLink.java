@@ -12,9 +12,9 @@ public class WebsiteLink {
     //+++++++++++++++++++++++++++++++++++++++++++
 
     public WebsiteLink(String urlName, String url, KeyCode keyCode) {
-        this.urlName = (urlName.equals("")) ? "Website" : urlName;
-        this.url = (url == null) ? "https://www.google.de" : url;
-        this.keyCode = (keyCode == null) ? KeyCode.A : keyCode;
+        this.urlName = urlName;
+        this.url = url;
+        this.keyCode = keyCode;
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++
@@ -41,5 +41,17 @@ public class WebsiteLink {
 
     public KeyCode getKeyCode() {
         return this.keyCode;
+    }
+
+    public void setUrlName(String urlName) {
+        this.urlName = urlName;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setKeyCode(KeyCode keyCode) {
+        this.keyCode = keyCode;
     }
 }
