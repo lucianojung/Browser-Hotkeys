@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane onKeyPressed="#handleLayoutKeyPressed" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.Jung.Luciano.main.Controller">
+<BorderPane onKeyPressed="#handleLayoutKeyPressed" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.Jung.Luciano.Controller.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>

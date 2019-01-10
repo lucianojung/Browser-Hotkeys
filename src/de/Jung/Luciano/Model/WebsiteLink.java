@@ -1,4 +1,4 @@
-package de.Jung.Luciano.main;
+package de.Jung.Luciano.Model;
 
 import javafx.scene.input.KeyCode;
 

@@ -1,5 +1,8 @@
-package de.Jung.Luciano.main;
+package de.Jung.Luciano.Controller;
 
+import de.Jung.Luciano.Model.Model;
+import de.Jung.Luciano.View.TableEditView;
+import de.Jung.Luciano.Model.WebsiteLink;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,9 +14,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class Controller {
@@ -67,7 +68,7 @@ public class Controller {
         //Add new Website
         WebsiteLink websiteLink = new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode());
         model.getWebsiteLinks().add(websiteLink);
-        model.addData(websiteLink);
+        model.saveData(new ArrayList<WebsiteLink>(Arrays.asList(websiteLink)), false);
     }
 
     @FXML
@@ -102,7 +103,7 @@ public class Controller {
         //Add new Website
         websiteLink = new WebsiteLink(editView.getTextFieldURLName().getText(), editView.getTextFieldURL().getText(), editView.getKeyCode());
         model.getWebsiteLinks().set(index, websiteLink);
-        model.saveData(model.getWebsiteLinks());
+        model.saveData(model.getWebsiteLinks(), true);
     }
 
     @FXML
@@ -164,10 +165,9 @@ public class Controller {
         );
 
         //load Data
-        List<String> dataList = model.loadData();
-        for (String websiteString : dataList) {
-            String[] strings = websiteString.split(",");
-            WebsiteLink websiteLink = new WebsiteLink(strings[0], strings[1], KeyCode.getKeyCode(strings[2]));
+        List<List<String>> dataList = model.loadData();
+        for (List<String> innerDataList : dataList) {
+            WebsiteLink websiteLink = new WebsiteLink(innerDataList.get(0), innerDataList.get(1), KeyCode.getKeyCode(innerDataList.get(2)));
             model.getWebsiteLinks().add(websiteLink);
         }
     }
@@ -216,19 +216,21 @@ public class Controller {
     private void removeWebsite(int index){
         WebsiteLink websiteLink = model.getWebsiteLinks().get(index);
         String deleteString = websiteLink.getUrlName() + "," + websiteLink.getUrl() + "," + websiteLink.getKeyCode();
-        List<String> dataList = model.loadData();
+        List<List<String>> dataList = model.loadData();
 
-        Iterator<String> iter = dataList.iterator();
+        Iterator<List<String>> iter = dataList.iterator();
 
         while (iter.hasNext()) {
-            String dataString = iter.next();
+            List<String> innerDataList = iter.next();
 
-            if (!dataString.equals(deleteString)) continue;
+            if (!innerDataList.get(0).equals(websiteLink.getUrlName())) continue;
+            if (!innerDataList.get(1).equals(websiteLink.getUrl())) continue;
+            if (!innerDataList.get(2).equals(websiteLink.getKeyCode().toString())) continue;
             //else
             System.out.println("Remove Website");
             iter.remove();
         }
-        model.saveData(model.StringListToWebsiteLinkList(dataList));
+        model.saveData(dataList);
         model.getWebsiteLinks().remove(index);
     }
 }
