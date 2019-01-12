@@ -22,6 +22,7 @@
               <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleManuItemSetFolder" text="Set Folder" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -42,7 +43,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add New" />
                 <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
               </items>

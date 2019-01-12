@@ -1,5 +1,7 @@
 package de.Jung.Luciano.Model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,7 +12,7 @@ import java.util.List;
 public class Model {
 
     private ObservableList<WebsiteLink> websiteLinks;
-    private String fileName;
+    private StringProperty folderNameProperty, fileNameProperty;
     private SimpleDataHandler dataHandler;
 
     //++++++++++++++++++++++++++++++++
@@ -19,8 +21,9 @@ public class Model {
 
     public Model() {
         websiteLinks = FXCollections.observableArrayList();
-        fileName = "C:\\Users\\Luciano\\Dropbox\\Privat\\websiteLinks\\savedWebsiteLinks.txt";
-        dataHandler = new SimpleDataHandler(fileName);
+        folderNameProperty = new SimpleStringProperty("C:\\Users\\Luciano\\Dropbox\\Privat\\websiteLinks");
+        fileNameProperty = new SimpleStringProperty(folderNameProperty.get() + "\\savedWebsiteLinks.txt");
+        dataHandler = new SimpleDataHandler(fileNameProperty.getValue());
 
         //Listener
         websiteLinks.addListener((ListChangeListener.Change<? extends WebsiteLink> change) -> {
@@ -38,6 +41,13 @@ public class Model {
                     saveData(websiteLinks, true);
                 }
             }
+        });
+        folderNameProperty.addListener((observable, oldValue, newValue) -> {
+            System.out.println("call Listener");
+            if (oldValue.equals(newValue)) return;
+            //else
+            fileNameProperty.setValue(folderNameProperty.get() + "\\savedWebsiteLinks.txt");
+            dataHandler.setFileName(fileNameProperty.getValue());
         });
     }
 
@@ -61,10 +71,6 @@ public class Model {
         dataHandler.save(dataList, override);
     }
 
-    public void saveData(List<List<String>> dataList){
-        dataHandler.save(dataList, false);
-    }
-
     public List<List<String>> loadData(){
         return dataHandler.load();
     }
@@ -75,5 +81,13 @@ public class Model {
 
     public ObservableList<WebsiteLink> getWebsiteLinks() {
         return websiteLinks;
+    }
+
+    public String getFolderNameProperty() {
+        return folderNameProperty.get();
+    }
+
+    public StringProperty folderNamePropertyProperty() {
+        return folderNameProperty;
     }
 }

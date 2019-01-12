@@ -9,8 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -83,6 +86,17 @@ public class Controller {
     @FXML
     private void handleMenuItemAbout(ActionEvent event) {
         //about the App
+    }
+
+    @FXML
+    private void handleManuItemSetFolder(ActionEvent event){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File(model.getFolderNameProperty()));
+        File result = directoryChooser.showDialog(tableView.getScene().getWindow());
+        if (result == null) return;
+        //else
+        model.folderNamePropertyProperty().set(result.toString());
+
     }
 
     @FXML
