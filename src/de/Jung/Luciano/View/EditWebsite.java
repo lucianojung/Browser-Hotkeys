@@ -1,11 +1,11 @@
-package de.Jung.Luciano.main;
+package de.Jung.Luciano.View;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
-public class TableEditView {
+public class EditWebsite {
     private GridPane gridPane;
     private Label labelURLName,
             labelURL,
@@ -15,7 +15,7 @@ public class TableEditView {
             textFieldKeyCode = new TextField();
     private KeyCode keyCode;
 
-    public TableEditView() {
+    public EditWebsite() {
         gridPane = new GridPane();
         labelURLName = new Label("URL Name: ");
         labelURL = new Label("URL :");
@@ -55,9 +55,5 @@ public class TableEditView {
 
     public GridPane getRoot() {
         return gridPane;
-    }
-
-    public KeyCode getKeyCode() {
-        return keyCode;
     }
 }
