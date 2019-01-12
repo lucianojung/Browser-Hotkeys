@@ -21,7 +21,7 @@ public class Model {
 
     public Model() {
         websiteLinks = FXCollections.observableArrayList();
-        folderNameProperty = new SimpleStringProperty("C:\\Users\\Luciano\\Dropbox\\Privat\\websiteLinks");
+        folderNameProperty = new SimpleStringProperty("C:\\Users");
         fileNameProperty = new SimpleStringProperty(folderNameProperty.get() + "\\savedWebsiteLinks.txt");
         dataHandler = new SimpleDataHandler(fileNameProperty.getValue());
 
