@@ -1,5 +1,8 @@
 package de.Jung.Luciano.Model;
 
+import com.sun.deploy.uitoolkit.impl.fx.ui.FXMessageDialog;
+import javafx.scene.control.Alert;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -86,7 +89,8 @@ public class SimpleDataHandler {
                 dataList.add(innerDataList);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            new Alert(Alert.AlertType.INFORMATION, "No Folder found!").showAndWait();
+            //e.printStackTrace();
         }
         return dataList;
     }

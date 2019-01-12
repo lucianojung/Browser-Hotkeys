@@ -92,7 +92,13 @@ public class Controller {
     private void handleManuItemSetFolder(ActionEvent event){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(model.getFolderNameProperty()));
-        File result = directoryChooser.showDialog(tableView.getScene().getWindow());
+        File result;
+        try {
+            result = directoryChooser.showDialog(tableView.getScene().getWindow());
+        } catch (IllegalArgumentException e){
+            directoryChooser.setInitialDirectory(null);
+            result = directoryChooser.showDialog(tableView.getScene().getWindow());
+        }
         if (result == null) return;
         //else
         model.folderNamePropertyProperty().set(result.toString());
