@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -89,23 +88,6 @@ public class Controller {
     }
 
     @FXML
-    private void handleManuItemSetFolder(ActionEvent event){
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(model.getFolderNameProperty()));
-        File result;
-        try {
-            result = directoryChooser.showDialog(tableView.getScene().getWindow());
-        } catch (IllegalArgumentException e){
-            directoryChooser.setInitialDirectory(null);
-            result = directoryChooser.showDialog(tableView.getScene().getWindow());
-        }
-        if (result == null) return;
-        //else
-        model.folderNamePropertyProperty().set(result.toString());
-
-    }
-
-    @FXML
     private void handleLayoutKeyPressed(KeyEvent event) throws InterruptedException {
         if(openPerShortcut(event)) return;  //return if nothing opened
         if (event.isControlDown()) return;  //return if control is pressed
@@ -130,6 +112,7 @@ public class Controller {
 
         //load Data
         List<List<String>> dataList = model.loadData();
+        if (dataList == null) return;
         for (List<String> innerDataList : dataList) {
             WebsiteLink websiteLink = new WebsiteLink(innerDataList.get(0), innerDataList.get(1), KeyCode.getKeyCode(innerDataList.get(2)));
             model.getWebsiteLinks().add(websiteLink);

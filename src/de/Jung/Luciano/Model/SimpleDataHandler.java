@@ -89,8 +89,7 @@ public class SimpleDataHandler {
                 dataList.add(innerDataList);
             }
         } catch (IOException e) {
-            new Alert(Alert.AlertType.INFORMATION, "No Folder found!").showAndWait();
-            //e.printStackTrace();
+            System.out.println("No File existing yet!");
         }
         return dataList;
     }

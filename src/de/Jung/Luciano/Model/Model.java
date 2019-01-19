@@ -5,15 +5,19 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.input.KeyCode;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Model {
 
     private ObservableList<WebsiteLink> websiteLinks;
-    private StringProperty folderNameProperty, fileNameProperty;
+    private StringProperty fileName;
     private SimpleDataHandler dataHandler;
+    private File file;
 
     //++++++++++++++++++++++++++++++++
     //contructor
@@ -21,33 +25,24 @@ public class Model {
 
     public Model() {
         websiteLinks = FXCollections.observableArrayList();
-        folderNameProperty = new SimpleStringProperty("C:\\Users\\sgnjd<aygnydag");
-        fileNameProperty = new SimpleStringProperty(folderNameProperty.get() + "\\savedWebsiteLinks.txt");
-        dataHandler = new SimpleDataHandler(fileNameProperty.getValue());
+        fileName = new SimpleStringProperty("C:\\Users\\Public\\Documents\\savedWebsiteLinks.txt");
+        file = new File(fileName.getValue());
+        dataHandler = new SimpleDataHandler(fileName.getValue());
 
         //Listener
         websiteLinks.addListener((ListChangeListener.Change<? extends WebsiteLink> change) -> {
-            while(change.next()){
-                if(change.wasRemoved()){
+            while (change.next()) {
+                if (change.wasRemoved()) {
                     System.out.println("Website removed");
                     saveData(websiteLinks, true);
-                }
-                else if (change.wasAdded()){
+                } else if (change.wasAdded()) {
                     System.out.println("Website Added");
                     saveData(websiteLinks, true);
-                }
-                else if (change.wasUpdated()){
+                } else if (change.wasUpdated()) {
                     System.out.println("Update detected");
                     saveData(websiteLinks, true);
                 }
             }
-        });
-        folderNameProperty.addListener((observable, oldValue, newValue) -> {
-            System.out.println("call Listener");
-            if (oldValue.equals(newValue)) return;
-            //else
-            fileNameProperty.setValue(folderNameProperty.get() + "\\savedWebsiteLinks.txt");
-            dataHandler.setFileName(fileNameProperty.getValue());
         });
     }
 
@@ -71,7 +66,8 @@ public class Model {
         dataHandler.save(dataList, override);
     }
 
-    public List<List<String>> loadData(){
+    public List<List<String>> loadData() {
+        if(!file.isFile()) return null;
         return dataHandler.load();
     }
 
@@ -83,11 +79,4 @@ public class Model {
         return websiteLinks;
     }
 
-    public String getFolderNameProperty() {
-        return folderNameProperty.get();
-    }
-
-    public StringProperty folderNamePropertyProperty() {
-        return folderNameProperty;
-    }
 }
