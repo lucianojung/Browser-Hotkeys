@@ -1,8 +1,11 @@
 package de.Jung.Luciano.Controller;
 
+import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+import com.sun.javafx.application.HostServicesDelegate;
 import de.Jung.Luciano.Model.Model;
 import de.Jung.Luciano.View.EditWebsite;
 import de.Jung.Luciano.Model.WebsiteLink;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -19,7 +23,7 @@ import java.net.URL;
 import java.util.*;
 
 
-public class Controller {
+public class Controller extends Application {
     //model
     private Model model;
 
@@ -37,6 +41,9 @@ public class Controller {
     public Controller() {
         this.model = new Model();
     }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {return;}
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //Event Handler
@@ -129,7 +136,7 @@ public class Controller {
             if (event.getCode() != KeyCode.A && event.getCode() != model.getWebsiteLinks().get(i).getKeyCode()) continue;
 
             //else keycode equals pressed key!
-            openWebpage(model.getWebsiteLinks().get(i).getUrl());
+            getHostServices().showDocument((model.getWebsiteLinks().get(i).getUrl()));
             if (!first) continue;
 
             //else wait till Browser is open -> sleep for 1.5 sek.
@@ -141,16 +148,6 @@ public class Controller {
             }
         }
         return first;
-    }
-
-    public boolean openWebpage(String url) {
-        try {
-            Desktop.getDesktop().browse(new URL(url).toURI());
-            return true;
-        } catch (IOException e) { e.printStackTrace();
-        } catch (URISyntaxException e) { e.printStackTrace();
-        }
-        return false;
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++
@@ -174,11 +171,6 @@ public class Controller {
         if (!result.get().equals(ButtonType.OK)) return null;
         if (websiteLink.getUrl() == null) {
             showAlert("Failure! Website URL is null!");
-            return null;
-        }
-        //if (websiteLink.getUrl().equals("")) return showAlert("Failure! Website URL is empty!");             //returns always null
-        if (!openWebpage(websiteLink.getUrl())) {
-            showAlert("Failure! Website URL is not valid!");
             return null;
         }
 
