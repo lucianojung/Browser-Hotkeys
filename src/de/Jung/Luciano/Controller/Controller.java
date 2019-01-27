@@ -1,142 +1,137 @@
 package de.Jung.Luciano.Controller;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
 import de.Jung.Luciano.Model.Model;
 import de.Jung.Luciano.View.EditWebsite;
 import de.Jung.Luciano.Model.WebsiteLink;
-import javafx.application.Application;
+import de.Jung.Luciano.View.Overview;
+import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 
 
-public class Controller extends Application {
+public class Controller {
     //model
     private Model model;
 
-    //from View
-    @FXML
-    private TableColumn tableColumnURLName, tableColumnURL, tableColumnURLShortcut;
-
-    @FXML
-    private TableView tableView;
+    //View
+    Overview view;
 
     //++++++++++++++++++++++++++++++++++++
     //constructor
     //+++++++++++++++++++++++++++++++++++
 
-    public Controller() {
-        this.model = new Model();
+    public Controller(Model model) {
+        this.model = model;
+        this.view = new Overview();
+
+        generateEventHandler();
+        loadData();
+        showData();
+        show();
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {return;}
+    private void loadData() {//load Data
+        List<WebsiteButton> dataList = model.loadData();
+        if (dataList == null) return;
+    }
+
+    private void showData() {
+        view.getFlowPane().getChildren().clear();
+        for (WebsiteButton websiteButton : model.getWebsiteButtons()){
+            view.getFlowPane().getChildren().add(websiteButton);
+        }
+    }
+
+    private void show() {
+        Stage primaryStage = model.getStage();
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(view.getRoot(), 850, 500));
+        primaryStage.show();
+    }
+
+    private void generateEventHandler() {
+        view.getMenuItemSave().setOnAction(event -> handleMenuItemSave(event));
+        view.getMenuItemLoad().setOnAction(event -> handleMenuItemLoad(event));
+        view.getMenuItemExit().setOnAction(event -> System.exit(0));
+        view.getMenuItemAdd().setOnAction(event -> handleMenuItemAdd(event));
+        view.getMenuItemEdit().setOnAction(event -> handleMenuItemEdit(event));
+        view.getMenuItemDelete().setOnAction(event -> handleMenuItemDelete(event));
+    }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //Event Handler
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    @FXML
-    private void handleMenuItemClose(ActionEvent event) {
-        System.exit(0);
+
+    private void handleMenuItemSave(ActionEvent event) {
+        model.saveData(model.getWebsiteButtons(), true);
     }
 
-    @FXML
+    private void handleMenuItemLoad(ActionEvent event) {
+        model.getWebsiteButtons().setAll(model.loadData());
+        showData();
+    }
+
     private void handleMenuItemAdd(ActionEvent event) {
+        WebsiteButton websiteButton;
+
         //Add new Website
-        WebsiteLink websiteLink = handleEditWebsite(null);
-        if (websiteLink == null) return;
+        websiteButton = handleEditWebsite(null);
+        if (websiteButton == null) return;
         //else
-        model.getWebsiteLinks().add(websiteLink);
+        model.getWebsiteButtons().add(websiteButton);
     }
 
-    @FXML
     private void handleMenuItemEdit(ActionEvent event){
-        int index = tableView.getSelectionModel().getSelectedIndex();
+
+        int index = 1;
         if (index == -1) return; //nothing choosen
 
-        WebsiteLink websiteLink = handleEditWebsite(model.getWebsiteLinks().get(index));
-        if (websiteLink == null) return;
+        WebsiteButton websiteButton = handleEditWebsite(model.getWebsiteButtons().get(index));
+        if (websiteButton == null) return;
         //else
-        model.getWebsiteLinks().remove(index);
-        model.getWebsiteLinks().add(index, websiteLink);
-        tableView.refresh();
+        model.getWebsiteButtons().remove(index);
+        model.getWebsiteButtons().add(index, websiteButton);
     }
 
-    @FXML
-    private void handleMenuItemRemove(ActionEvent event) {
+    private void handleMenuItemDelete(ActionEvent event) {
         //remove an URL-Link
-        int index = tableView.getSelectionModel().getSelectedIndex();
+        int index = 1;
         if (index == -1) return; //nothing choosen
 
-        Optional result = showAlert("Want to delete Website: " + tableView.getSelectionModel().getSelectedItems().get(0).toString() + "?");
+        Optional result = showAlert("Want to delete Website: " + "PlatzHalter für WebsiteButtonName" + "?");
         if (!result.isPresent() || !result.get().equals(ButtonType.OK)) return;
         //else
-        model.getWebsiteLinks().remove(index);
+        model.getWebsiteButtons().remove(index);
     }
 
 
-    @FXML
     private void handleMenuItemAbout(ActionEvent event) {
         //about the App
     }
 
-    @FXML
     private void handleLayoutKeyPressed(KeyEvent event) throws InterruptedException {
         if(openPerShortcut(event)) return;  //return if nothing opened
         if (event.isControlDown()) return;  //return if control is pressed
         System.exit(0);              //else Exit System
     }
-
-    //+++++++++++++++++++++++++++++++++++++
-    //after FXML initialize Nodes
-    //+++++++++++++++++++++++++++++++++++++
-    @FXML
-    void initialize() {
-        tableView.setItems(model.getWebsiteLinks());
-        tableColumnURLName.setCellValueFactory(
-                new PropertyValueFactory<WebsiteLink, String>("urlName")
-        );
-        tableColumnURL.setCellValueFactory(
-                new PropertyValueFactory<WebsiteLink, String>("url")
-        );
-        tableColumnURLShortcut.setCellValueFactory(
-                new PropertyValueFactory<WebsiteLink, KeyCode>("keyCode")
-        );
-
-        //load Data
-        List<List<String>> dataList = model.loadData();
-        if (dataList == null) return;
-        for (List<String> innerDataList : dataList) {
-            WebsiteLink websiteLink = new WebsiteLink(innerDataList.get(0), innerDataList.get(1), KeyCode.getKeyCode(innerDataList.get(2)));
-            model.getWebsiteLinks().add(websiteLink);
-        }
-    }
-
     //+++++++++++++++++++++++++++++++++++++
     //other methods
     //+++++++++++++++++++++++++++++++++++++
 
     private boolean openPerShortcut(KeyEvent event) {
         boolean first = true;
-        for (int i = 0; i < model.getWebsiteLinks().size(); i++) {
-            if (event.getCode() != KeyCode.A && event.getCode() != model.getWebsiteLinks().get(i).getKeyCode()) continue;
+        for (int i = 0; i < model.getWebsiteButtons().size(); i++) {
 
             //else keycode equals pressed key!
-            getHostServices().showDocument((model.getWebsiteLinks().get(i).getUrl()));
+            ApplicationAdapter adapter = new ApplicationAdapter();
+            adapter.showWebsite(model.getWebsiteButtons().get(i).getUrl());
             if (!first) continue;
 
             //else wait till Browser is open -> sleep for 1.5 sek.
@@ -154,45 +149,42 @@ public class Controller extends Application {
     //methods
     //++++++++++++++++++++++++++++++++++++++++++++++
 
-    private WebsiteLink handleEditWebsite(WebsiteLink websiteLink){
+    private WebsiteButton handleEditWebsite(WebsiteButton websiteButton){
 
         EditWebsite editWebsite = new EditWebsite();
-        Dialog dialog = createEditDialog(websiteLink, editWebsite);
+        Dialog dialog = createEditDialog(websiteButton, editWebsite);
 
-        if (websiteLink == null)
-            websiteLink = new WebsiteLink(null, null, null);
+        if (websiteButton == null)
+            websiteButton = new WebsiteButton("Website", "www.google.de");
 
         Optional result = dialog.showAndWait();
-        websiteLink.setUrlName(editWebsite.getTextFieldURLName().getText());
-        websiteLink.setUrl(editWebsite.getTextFieldURL().getText());
-        websiteLink.setKeyCode(KeyCode.getKeyCode(editWebsite.getTextFieldKeyCode().getText()));
+        websiteButton.setText(editWebsite.getTextFieldURLName().getText());
+        websiteButton.setUrl(editWebsite.getTextFieldURL().getText());
 
         if (!result.isPresent()) return null;
         if (!result.get().equals(ButtonType.OK)) return null;
-        if (websiteLink.getUrl() == null) {
+        if (websiteButton.getUrl() == null) {
             showAlert("Failure! Website URL is null!");
             return null;
         }
 
-        if (websiteLink.getUrlName().equals("")) websiteLink.setUrlName("Website");
-        if (websiteLink.getKeyCode() == null) websiteLink.setKeyCode(KeyCode.getKeyCode("A"));
-        //else
+        if (websiteButton.getUrl().equals(""))
+            websiteButton.setUrl("Website");
 
-        return websiteLink;
+        return websiteButton;
     }
 
-    private Dialog createEditDialog(WebsiteLink websiteLink, EditWebsite editWebsite) {
+    private Dialog createEditDialog(WebsiteButton websiteButton, EditWebsite editWebsite) {
         Dialog dialog = new Dialog();
         dialog.setTitle("Edit Website Settings");
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         dialog.getDialogPane().setContent(editWebsite.getRoot());
-        if (websiteLink == null) return dialog;
+        if (websiteButton == null) return dialog;
         //else
-        editWebsite.getTextFieldURLName().setText(websiteLink.getUrlName());
-        editWebsite.getTextFieldURL().setText(websiteLink.getUrl());
-        editWebsite.getTextFieldKeyCode().setText(websiteLink.getKeyCode().toString());
+        editWebsite.getTextFieldURLName().setText(websiteButton.getText());
+        editWebsite.getTextFieldURL().setText(websiteButton.getUrl());
         return dialog;
     }
 

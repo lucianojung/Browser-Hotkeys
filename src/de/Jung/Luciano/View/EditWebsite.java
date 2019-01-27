@@ -7,38 +7,21 @@ import javafx.scene.layout.GridPane;
 
 public class EditWebsite {
     private GridPane gridPane;
-    private Label labelURLName,
-            labelURL,
-            labelKeyCode;
-    private TextField textFieldURLName = new TextField(),
-            textFieldURL = new TextField(),
-            textFieldKeyCode = new TextField();
-    private KeyCode keyCode;
+    private Label labelURLName, labelURL;
+    private TextField textFieldURLName = new TextField(), textFieldURL = new TextField();
 
     public EditWebsite() {
         gridPane = new GridPane();
         labelURLName = new Label("URL Name: ");
         labelURL = new Label("URL :");
-        labelKeyCode = new Label("KeyCode");
 
         textFieldURLName.setPromptText("Name der Website");
         textFieldURL.setPromptText("Website URL");
-        textFieldKeyCode.setPromptText("Shortcut");
 
         gridPane.add(labelURLName, 0, 0);
         gridPane.add(labelURL, 0, 1);
-        gridPane.add(labelKeyCode, 0, 2);
         gridPane.add(textFieldURLName, 1, 0);
         gridPane.add(textFieldURL, 1, 1);
-        gridPane.add(textFieldKeyCode, 1, 2);
-
-        textFieldKeyCode.textProperty().addListener((observable, oldValue, newValue) -> {
-            textFieldKeyCode.setText(Character.toString(newValue.charAt(newValue.length()-1)));
-        });
-
-        textFieldKeyCode.setOnKeyPressed(event -> {
-            keyCode = event.getCode();
-        });
     }
 
     public TextField getTextFieldURLName() {
@@ -47,10 +30,6 @@ public class EditWebsite {
 
     public TextField getTextFieldURL() {
         return textFieldURL;
-    }
-
-    public TextField getTextFieldKeyCode() {
-        return textFieldKeyCode;
     }
 
     public GridPane getRoot() {

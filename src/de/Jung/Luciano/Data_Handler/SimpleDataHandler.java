@@ -1,7 +1,4 @@
-package de.Jung.Luciano.Model;
-
-import com.sun.deploy.uitoolkit.impl.fx.ui.FXMessageDialog;
-import javafx.scene.control.Alert;
+package de.Jung.Luciano.Data_Handler;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleDataHandler {
+public class SimpleDataHandler implements SimpleDataInterface{
 
     /*
      * class for simple save and load objects in a List
@@ -32,6 +29,10 @@ public class SimpleDataHandler {
 
     public SimpleDataHandler(String fileName) {
         this.fileName = fileName;
+        save(new ArrayList<>(), false);
+        if (load().size() == 0) return;
+        //else show the User, that the File already Exists before and have text in it
+        System.out.println("File is not Empty");
     }
 
     public SimpleDataHandler() {
@@ -43,7 +44,8 @@ public class SimpleDataHandler {
     //save and load
     //++++++++++++++++++++++++++++++++
 
-    protected void save(List<List<String>> dataList, boolean override) {
+    @Override
+    public void save(List<Object> dataList, boolean override) {
         try {
             //override if true
             if (override){
@@ -58,10 +60,8 @@ public class SimpleDataHandler {
             * the inner List is for one Object-Data seperated with ,
             * the outer list is for various of object-data seperated with a new Line
             */
-            for (List<String> innerDataList : dataList) {
-                for (String stringData : innerDataList) {
-                    bufferedWriter.append(stringData + ",");
-                }
+            for (Object objects : dataList) {
+                bufferedWriter.append(objects.toString() + ",");
                 bufferedWriter.newLine();
             }
             //close bufferedWriter and return
@@ -74,22 +74,18 @@ public class SimpleDataHandler {
     }
 
 
-    protected List<List<String>> load() {
-        List<List<String>> dataList = new ArrayList<>();
+    @Override
+    public List<Object> load() {
+        List<Object> dataList = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             for (int i = 0; i < Files.lines(Paths.get(fileName)).count(); i++) {
-                String[] strings = bufferedReader.readLine().split(",");
-                List<String> innerDataList = new ArrayList<>();
-                for ( String stringData : strings) {
-                    innerDataList.add(stringData);
-                }
-                dataList.add(innerDataList);
+                dataList.add(bufferedReader.readLine());
             }
         } catch (IOException e) {
-            System.out.println("No File existing yet!");
+            e.printStackTrace();
         }
         return dataList;
     }
@@ -99,11 +95,11 @@ public class SimpleDataHandler {
     //+++++++++++++++++++++++++
 
 
-    public String getFileName() {
+    protected String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    protected void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

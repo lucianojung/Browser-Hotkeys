@@ -1,5 +1,8 @@
 package de.Jung.Luciano;
 
+import de.Jung.Luciano.Controller.Controller;
+import de.Jung.Luciano.Model.Model;
+import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,10 +14,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("View/WebsiteViewer.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 850, 500));
-        primaryStage.show();
+        Model model = new Model(primaryStage);
+
+        new Controller(model);
     }
 
     public static void main(String[] args) {

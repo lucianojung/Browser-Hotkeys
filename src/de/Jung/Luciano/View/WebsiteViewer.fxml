@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.web.WebView?>
 
 <BorderPane onKeyPressed="#handleLayoutKeyPressed" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.Jung.Luciano.Controller.Controller">
    <top>
@@ -21,7 +22,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemDelete" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -35,7 +36,14 @@
    <center>
       <TableView fx:id="tableView" prefHeight="421.0" prefWidth="513.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="tableColumnURLName" text="Name" />
+          <TableColumn fx:id="tableColumnURLName" text="Name">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></TableColumn>
           <TableColumn fx:id="tableColumnURL" text="Website" />
             <TableColumn fx:id="tableColumnURLShortcut" text="Shortcut" />
         </columns>
@@ -44,10 +52,13 @@
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemAdd" text="Add New" />
                 <MenuItem mnemonicParsing="false" onAction="#handleMenuItemEdit" text="Edit" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemRemove" text="Delete" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemDelete" text="Delete" />
               </items>
             </ContextMenu>
          </contextMenu>
       </TableView>
    </center>
+   <bottom>
+      <WebView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
