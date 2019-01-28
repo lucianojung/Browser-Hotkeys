@@ -1,6 +1,7 @@
 package de.Jung.Luciano.View;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
@@ -48,12 +49,15 @@ public class Overview {
         menuItemRemove = new MenuItem("Remove");
 
         menuAction.getItems().addAll(menuItemOpenFile, menuItemSave, menuItemSaveAs, menuItemExit);
-        menuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemRemove);
-        contextMenuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemRemove);
+        menuEdit.getItems().addAll(menuItemAdd);
+        contextMenuEdit.getItems().addAll(menuItemEdit, menuItemRemove);
         menuBar.getMenus().addAll(menuAction, menuEdit);
         root.setTop(menuBar);
 
         //flowPane
+        flowPane.setPadding(new Insets(5));
+        flowPane.setHgap(5);
+        flowPane.setVgap(5);
         flowPane.setOnContextMenuRequested(event -> contextMenuEdit.show(flowPane, event.getScreenX(), event.getScreenY()));
         root.setCenter(flowPane);
     }

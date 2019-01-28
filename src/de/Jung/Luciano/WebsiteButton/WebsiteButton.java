@@ -2,7 +2,10 @@ package de.Jung.Luciano.WebsiteButton;
 
 import de.Jung.Luciano.Controller.ApplicationFassade;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 import java.util.Random;
 
@@ -19,13 +22,15 @@ public class WebsiteButton extends Button {
         this.url = url;
         this.setStyle("-fx-background-color: " + this.getRandomColor());
 
+        //Listener
         this.setOnAction(event -> handleWebsiteButton(event));
+        this.addEventHandler(ScrollEvent.SCROLL, event -> this.setStyle("-fx-background-color: " + this.getRandomColor()));
     }
 
     private void handleWebsiteButton(ActionEvent event) {
         System.out.println("Open Browser, Search Website: " + this.url);
-        ApplicationFassade adapter = new ApplicationFassade();
-        adapter.showWebsite(url);
+        ApplicationFassade fassade = new ApplicationFassade();
+        fassade.showWebsite(url);
     }
 
     @Override
@@ -38,17 +43,20 @@ public class WebsiteButton extends Button {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public String getRandomColor() {
-        // create random object - reuse this as often as possible
+        /*
+        * create Object of Class Random
+        * create randomNumber with max ffffff (hex) = 16777215
+        * format it as Hexadezimal String
+        * return color
+        */
         Random random = new Random();
+        int nextInt;
+        do {
+            nextInt = random.nextInt(0xffffff + 1);
+        }
+        while (nextInt < 10000000);
 
-        // create a big random number - maximum is ffffff (hex) = 16777215 (dez)
-        int nextInt = random.nextInt(0xffffff + 1);
-
-        // format it as hexadecimal string (with hashtag and leading zeros)
         String color = String.format("#%06x", nextInt);
-
-        // print it
-        System.out.println(color);
         return color;
     }
 

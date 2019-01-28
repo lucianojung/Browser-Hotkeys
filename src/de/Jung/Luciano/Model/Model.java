@@ -38,9 +38,7 @@ public class Model {
         //else
         System.out.println("File have Data in it! Loading...");
         websiteButtons = data;
-
     }
-
 
     //+++++++++++++++++++++++++++++++
     //Save and Load Data-Methods    +
@@ -48,11 +46,29 @@ public class Model {
 
 
     public void saveData(List<WebsiteButton> dataList, boolean override) {
-        dataHandler.save(new ArrayList<>(Arrays.asList(dataList)), override);
+        /*
+        * for each WebsiteButton from dataList
+        *   create one Object of WebsiteButton
+        * save Data via SimpleDataInterface (uses toString()-Method, to save Object Data)
+        */
+        List<Object> objects = new ArrayList<>();
+        for (WebsiteButton websiteButton : dataList){
+            objects.add(websiteButton);
+        }
+        System.out.println("Saving Data: " + objects.size() + " Objects");
+        dataHandler.save(objects, override);
     }
 
-    public ObservableList<WebsiteButton> loadData() {
-
+    public List<WebsiteButton> loadData() {
+        /*
+        * if (fileName is no File) return
+        * else:
+        *   create List<WebsiteButton>
+        *   load Data via SimpleDataInterface in another List<Object>
+        *   look if Object is a String with two Strings seperated with a ","
+        *       if yes: add a new WebsiteButton to first List (String[0] = Name, String[1] = Url)
+        *   return first List
+        */
         if(!new File(fileName).isFile()) return null;
         List<WebsiteButton> websiteButtonList = new ArrayList<>();
 
@@ -62,7 +78,8 @@ public class Model {
             if (strings.length != 2) continue;
             websiteButtonList.add(new WebsiteButton(strings[0], strings[1]));
         }
-        return FXCollections.observableArrayList(websiteButtonList);
+        System.out.println("Load Data, Found " + websiteButtonList.size() + " WebsiteButtons!");
+        return websiteButtonList;
     }
 
     //+++++++++++++++++++++++++++++++
@@ -74,16 +91,19 @@ public class Model {
     }
 
     public List<WebsiteButton> getWebsiteButtons() {
+        websiteButtons = loadData();
         return websiteButtons;
     }
 
     public void addWebsiteButton(WebsiteButton websiteButton){
         websiteButtons.add(websiteButton);
         //add Funktionality: actualise Data and/or Screen
+        saveData(websiteButtons, true);
     }
 
     public void removeWebsiteButton(WebsiteButton websiteButton){
         websiteButtons.remove(websiteButton);
         //add Funktionality: actualise Data and/or Screen
+        saveData(websiteButtons, true);
     }
 }

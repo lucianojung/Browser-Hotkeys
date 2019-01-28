@@ -4,7 +4,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>10</x>
+      <x>0</x>
       <y>650</y>
       <w>340</w>
       <h>100</h>
@@ -21,7 +21,7 @@ SimpleDataInterface
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>680</x>
+      <x>670</x>
       <y>370</y>
       <w>220</w>
       <h>100</h>
@@ -38,7 +38,7 @@ Main
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>180</x>
+      <x>170</x>
       <y>350</y>
       <w>400</w>
       <h>250</h>
@@ -66,7 +66,7 @@ Model
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>180</x>
+      <x>170</x>
       <y>800</y>
       <w>410</w>
       <h>160</h>
@@ -87,7 +87,7 @@ SimpleDataHandler
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>850</x>
+      <x>840</x>
       <y>300</y>
       <w>190</w>
       <h>30</h>
@@ -98,7 +98,7 @@ SimpleDataHandler
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
+      <x>760</x>
       <y>300</y>
       <w>100</w>
       <h>90</h>
@@ -109,21 +109,21 @@ SimpleDataHandler
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
+      <x>590</x>
       <y>560</y>
       <w>340</w>
-      <h>320</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Class&gt;&gt;
 Controller
 --
 - model: Model
 - view: View
-- adapter: ApplicationAdapter
+- fassade: ApplicatioFassade
 - dialog: WebsiteDialog
 --
 + Controller(model: Model)
-- handleOpenSavedData(event: ActionEvent): void
+- handleOpenFile(event: ActionEvent): void
 - handleSave(event: ActionEvent): void
 - handleSaveAs(event: ActionEvent): void
 - handleAddWebsite(event: ActionEvent): void
@@ -135,7 +135,7 @@ Controller
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>610</x>
+      <x>600</x>
       <y>90</y>
       <w>310</w>
       <h>190</h>
@@ -157,7 +157,7 @@ WebsiteButton
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>680</x>
+      <x>670</x>
       <y>0</y>
       <w>190</w>
       <h>30</h>
@@ -168,7 +168,7 @@ WebsiteButton
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>760</x>
+      <x>750</x>
       <y>20</y>
       <w>30</w>
       <h>90</h>
@@ -179,7 +179,7 @@ WebsiteButton
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1080</x>
+      <x>1070</x>
       <y>170</y>
       <w>290</w>
       <h>110</h>
@@ -196,7 +196,7 @@ showWebsite(url: String): void</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1030</x>
+      <x>1020</x>
       <y>270</y>
       <w>110</w>
       <h>60</h>
@@ -208,24 +208,28 @@ showWebsite(url: String): void</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>1060</x>
-      <y>440</y>
+      <y>450</y>
       <w>400</w>
-      <h>100</h>
+      <h>170</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Class&gt;&gt;
 WebsiteDialog
 --
-
+- labelName: Label
+- labelUrl: Label
+- textFieldName: TextField
+- textFieldUrl: TextField
+- gridPane: GridPane
 --
-showDialog(websiteButton: WebsiteButton): WebsiteButton
-showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
++ showDialog(websiteButton: WebsiteButton): WebsiteButton
++ showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1170</x>
-      <y>600</y>
+      <x>1200</x>
+      <y>340</y>
       <w>190</w>
       <h>30</h>
     </coordinates>
@@ -235,18 +239,18 @@ showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1250</x>
-      <y>530</y>
-      <w>30</w>
-      <h>90</h>
+      <x>1240</x>
+      <y>360</y>
+      <w>70</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>50.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
+      <x>560</x>
       <y>410</y>
       <w>130</w>
       <h>70</h>
@@ -258,7 +262,7 @@ showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>760</x>
+      <x>750</x>
       <y>460</y>
       <w>80</w>
       <h>120</h>
@@ -270,7 +274,7 @@ showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
+      <x>450</x>
       <y>230</y>
       <w>170</w>
       <h>140</h>
@@ -283,7 +287,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>200</x>
+      <x>190</x>
       <y>590</y>
       <w>30</w>
       <h>80</h>
@@ -294,7 +298,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
+      <x>920</x>
       <y>270</y>
       <w>260</w>
       <h>360</h>
@@ -307,7 +311,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>910</x>
+      <x>900</x>
       <y>210</y>
       <w>190</w>
       <h>40</h>
@@ -320,19 +324,19 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
+      <x>920</x>
       <y>530</y>
-      <w>240</w>
+      <w>160</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>220.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>140.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>370</x>
+      <x>360</x>
       <y>590</y>
       <w>80</w>
       <h>230</h>
@@ -344,7 +348,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
+      <x>230</x>
       <y>740</y>
       <w>30</w>
       <h>80</h>
@@ -355,7 +359,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>370</x>
+      <x>360</x>
       <y>170</y>
       <w>260</w>
       <h>200</h>
@@ -367,7 +371,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
+      <x>920</x>
       <y>270</y>
       <w>240</w>
       <h>320</h>
@@ -379,7 +383,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
+      <x>910</x>
       <y>180</y>
       <w>180</w>
       <h>40</h>
@@ -391,7 +395,7 @@ m2=1</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1260</x>
+      <x>1250</x>
       <y>100</y>
       <w>140</w>
       <h>30</h>
@@ -402,7 +406,7 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1300</x>
+      <x>1290</x>
       <y>120</y>
       <w>50</w>
       <h>70</h>
@@ -413,7 +417,7 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1080</x>
+      <x>1070</x>
       <y>660</y>
       <w>300</w>
       <h>290</h>
@@ -436,5 +440,17 @@ Overview
 --
 + getter</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>770</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
