@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>660</y>
+      <w>340</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+SimpleDataInterface
+--
+
+--
++ save(objects: List&lt;Object&gt;, override: boolean): void
++ load(): List&lt;Object&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>380</y>
+      <w>220</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Main
+--
+- model: Model
+--
++ main(args: String[]): void
++ start(primaryStage: Stage): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>360</y>
+      <w>400</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Model
+--
+- stage: Stage
+- websiteButtons: List&lt;WebsiteButton&gt;
+- fileName: String
+- dataHandler: SimpleDataInterface
+--
++ Model(stage: Stage)
+- loadData(): List&lt;Object&gt;
+- saveData(List&lt;Object&gt;): void
++ getStage(): Stage
++ getWebsiteButtons(): List&lt;WebsiteButton&gt;
++ addWebsiteButton(websiteButton: WebsiteButton): void
++ removeWebsiteButton(websiteButton: WebsiteButton): void
++ getFileName(): String
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>810</y>
+      <w>410</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+SimpleDataHandler
+--
+- fileName: String
+--
++ SimpleDataHandler()
++ SimpleDataHandler(fileName: String)
++ save(objects: List&lt;Object&gt;, override: boolean): void &lt;&lt;override&gt;&gt;
++ load(): List&lt;Object&gt; &lt;&lt;override&gt;&gt;
+# getFileName(): String
+# setFileName(fileName: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>850</x>
+      <y>310</y>
+      <w>190</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>javafx.application.Application</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>310</y>
+      <w>100</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>570</y>
+      <w>340</w>
+      <h>320</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Controller
+--
+- model: Model
+- view: View
+- adapter: ApplicationAdapter
+- dialog: WebsiteDialog
+--
++ Controller(model: Model)
+- handleOpenSavedData(event: ActionEvent): void
+- handleSave(event: ActionEvent): void
+- handleSaveAs(event: ActionEvent): void
+- handleAddWebsite(event: ActionEvent): void
+- handleEditWebsite(event: ActionEvent): void
+- handleRemoveWebsite(event: ActionEvent): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>610</x>
+      <y>100</y>
+      <w>310</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+WebsiteButton
+--
+- url: String
+- color: String
+--
++ WebsiteButton(name: String, url: String)
+- handleWebsiteButton(event: ActionEvent): void
++ toString(): String &lt;&lt;override&gt;&gt;
++ getRandomColor(): String
++ getURL(): String
++ setUrl(url: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>10</y>
+      <w>190</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>javafx.scene.control.Button</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>30</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1080</x>
+      <y>180</y>
+      <w>290</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+ApplicationFassade
+--
+
+--
+start(primaryStage: Stage): void &lt;&lt;override&gt;&gt;
+showWebsite(url: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1030</x>
+      <y>280</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>450</y>
+      <w>400</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+WebsiteDialog
+--
+
+--
+showDialog(websiteButton: WebsiteButton): WebsiteButton
+showRemoveDialog(websiteButton: WebsiteButton): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1170</x>
+      <y>610</y>
+      <w>190</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>javafx.scene.control.Dialog</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1250</x>
+      <y>540</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>570</x>
+      <y>420</y>
+      <w>130</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;50.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>470</y>
+      <w>80</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>240</y>
+      <w>170</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0,*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;120.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>200</x>
+      <y>600</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>280</y>
+      <w>260</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;340.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>220</y>
+      <w>190</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>540</y>
+      <w>240</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>600</y>
+      <w>80</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;210.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>750</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>180</y>
+      <w>260</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>240.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>280</y>
+      <w>240</w>
+      <h>320</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>190</y>
+      <w>180</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1260</x>
+      <y>110</y>
+      <w>140</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>shows the Website </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1300</x>
+      <y>130</y>
+      <w>50</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1080</x>
+      <y>670</y>
+      <w>190</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Overview
+--
+menuBar: MenuBar
+menuFile: Menu
+menuEdit: Menu</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
