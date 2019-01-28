@@ -112,18 +112,18 @@ SimpleDataHandler
       <x>600</x>
       <y>560</y>
       <w>340</w>
-      <h>240</h>
+      <h>320</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Class&gt;&gt;
 Controller
 --
 - model: Model
 - view: View
-- fassade: ApplicatioFassade
+- adapter: ApplicationAdapter
 - dialog: WebsiteDialog
 --
 + Controller(model: Model)
-- handleOpenFile(event: ActionEvent): void
+- handleOpenSavedData(event: ActionEvent): void
 - handleSave(event: ActionEvent): void
 - handleSaveAs(event: ActionEvent): void
 - handleAddWebsite(event: ActionEvent): void
@@ -436,17 +436,5 @@ Overview
 --
 + getter</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>930</x>
-      <y>770</y>
-      <w>170</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-&lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>

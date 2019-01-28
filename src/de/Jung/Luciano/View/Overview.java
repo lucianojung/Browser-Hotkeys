@@ -1,6 +1,7 @@
 package de.Jung.Luciano.View;
 
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -8,7 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class Overview {
 
@@ -21,11 +22,12 @@ public class Overview {
     Menu menuEdit;
     ContextMenu contextMenuEdit;
     MenuItem menuItemSave;
-    MenuItem menuItemLoad;
+    MenuItem menuItemSaveAs;
+    MenuItem menuItemOpenFile;
     MenuItem menuItemExit;
     MenuItem menuItemAdd;
     MenuItem menuItemEdit;
-    MenuItem menuItemDelete;
+    MenuItem menuItemRemove;
 
     public Overview() {
         //set Layouts
@@ -37,32 +39,38 @@ public class Overview {
         menuAction = new Menu("File");
         menuEdit = new Menu("Edit");
         contextMenuEdit = new ContextMenu();
+        menuItemOpenFile = new MenuItem("Open File");
         menuItemSave = new MenuItem("Save");
-        menuItemLoad = new MenuItem("Load");
+        menuItemSaveAs = new MenuItem("Save As");
         menuItemExit = new MenuItem("Exit");
         menuItemAdd = new MenuItem("Add");
         menuItemEdit = new MenuItem("Edit");
-        menuItemDelete = new MenuItem("Delete");
+        menuItemRemove = new MenuItem("Remove");
 
-        menuAction.getItems().addAll(menuItemSave, menuItemLoad, menuItemExit);
-        menuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemDelete);
-        contextMenuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemDelete);
+        menuAction.getItems().addAll(menuItemOpenFile, menuItemSave, menuItemSaveAs, menuItemExit);
+        menuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemRemove);
+        contextMenuEdit.getItems().addAll(menuItemAdd, menuItemEdit, menuItemRemove);
         menuBar.getMenus().addAll(menuAction, menuEdit);
         root.setTop(menuBar);
 
-        flowPane.setOnContextMenuRequested(new EventHandler< ContextMenuEvent >(){
-
-            @Override
-            public void handle(ContextMenuEvent event) {
-                contextMenuEdit.show(flowPane, event.getScreenX(), event.getScreenY());
-            }
-        });
+        //flowPane
+        flowPane.setOnContextMenuRequested(event -> contextMenuEdit.show(flowPane, event.getScreenX(), event.getScreenY()));
         root.setCenter(flowPane);
     }
 
-    //++++++++++++++++++++++++++++++++++++++++++++++
-    //getter and setter
-    //++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++
+    //other methods                 +
+    //+++++++++++++++++++++++++++++++
+
+    public void show(Stage stage) {
+        stage.setTitle("Website Shortcuts");
+        stage.setScene(new Scene(root, 800, 600));
+        stage.show();
+    }
+
+    //+++++++++++++++++++++++++++++++
+    //getter and setter             +
+    //+++++++++++++++++++++++++++++++
 
 
     public BorderPane getRoot() {
@@ -77,8 +85,12 @@ public class Overview {
         return menuItemSave;
     }
 
-    public MenuItem getMenuItemLoad() {
-        return menuItemLoad;
+    public MenuItem getMenuItemSaveAs() {
+        return menuItemSaveAs;
+    }
+
+    public MenuItem getMenuItemOpenFile() {
+        return menuItemOpenFile;
     }
 
     public MenuItem getMenuItemExit() {
@@ -93,7 +105,8 @@ public class Overview {
         return menuItemEdit;
     }
 
-    public MenuItem getMenuItemDelete() {
-        return menuItemDelete;
+    public MenuItem getMenuItemRemove() {
+        return menuItemRemove;
     }
+
 }

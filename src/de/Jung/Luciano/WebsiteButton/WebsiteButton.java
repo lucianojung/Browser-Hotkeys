@@ -1,6 +1,6 @@
 package de.Jung.Luciano.WebsiteButton;
 
-import de.Jung.Luciano.Controller.ApplicationAdapter;
+import de.Jung.Luciano.Controller.ApplicationFassade;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
@@ -9,21 +9,22 @@ import java.util.Random;
 public class WebsiteButton extends Button {
 
     String url;
-    String color;
-    String identifier;
+
+    public WebsiteButton(){
+        this(null, null);
+    }
 
     public WebsiteButton(String name, String url) {
         super(name);
         this.url = url;
-        color = getRandomColor();
-        //this.setStyle("-fx-background-color: " + this.color);  //de-Comment to show Colorful Buttons
+        this.setStyle("-fx-background-color: " + this.getRandomColor());
 
         this.setOnAction(event -> handleWebsiteButton(event));
     }
 
     private void handleWebsiteButton(ActionEvent event) {
         System.out.println("Open Browser, Search Website: " + this.url);
-        ApplicationAdapter adapter = new ApplicationAdapter();
+        ApplicationFassade adapter = new ApplicationFassade();
         adapter.showWebsite(url);
     }
 
@@ -49,14 +50,6 @@ public class WebsiteButton extends Button {
         // print it
         System.out.println(color);
         return color;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public String getIdentifier() {
-        return identifier;
     }
 
     public String getUrl() {

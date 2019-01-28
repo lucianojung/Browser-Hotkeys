@@ -1,73 +1,54 @@
 package de.Jung.Luciano.Model;
 
 import de.Jung.Luciano.Data_Handler.SimpleDataHandler;
-import de.Jung.Luciano.Data_Handler.SimpleDataInterface;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Model {
 
     private Stage stage;
-    private ObservableList<WebsiteButton> websiteButtons;
-    private String fileName;
+    private List<WebsiteButton> websiteButtons;
     private SimpleDataInterface dataHandler;
+    private String fileName = "C:\\Users\\Public\\Documents\\savedWebsiteLinks.txt";
 
-    //++++++++++++++++++++++++++++++++
-    //contructor
-    //++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++
+    //constructor                   +
+    //+++++++++++++++++++++++++++++++
 
     public Model(Stage stage) {
         this.stage = stage;
-        websiteButtons = FXCollections.observableArrayList();
-        fileName = "C:\\Users\\Public\\Documents\\savedWebsiteLinks.txt";
-        //add fileName in Constructor to save it somewhere else
-        dataHandler = new SimpleDataHandler();
+        this.websiteButtons = new ArrayList<>();
+        this.dataHandler = new SimpleDataHandler();                  //add fileName in Constructor to save it somewhere else
 
-        //test File
+        /*
+        * test if the File exists and has already Data
+        * if size() of the data loaded is > 0 means it has!
+        * if it has load the Data
+        */
         saveData(new ArrayList<>(), false);
-        if (loadData().size() != 0){
-            //means that the File already Exists before and have text in it
-            System.out.println("File is not Empty");
-        }
+        List<WebsiteButton> data = loadData();
+        if (data.size() == 0) return;
+        //else
+        System.out.println("File have Data in it! Loading...");
+        websiteButtons = data;
 
-        //load
-        websiteButtons = loadData();
-
-        //Listener
-        /*websiteButtons.addListener((ListChangeListener.Change<? extends WebsiteButton> change) -> {
-            while (change.next()) {
-                if (change.wasRemoved()) {
-                    System.out.println("Website removed");
-                    saveData(websiteButtons, true);
-                } else if (change.wasAdded()) {
-                    System.out.println("Website Added");
-                    saveData(websiteButtons, true);
-                } else if (change.wasUpdated()) {
-                    System.out.println("Update detected");
-                    saveData(websiteButtons, true);
-                }
-            }
-        });*/
     }
 
 
-    //++++++++++++++++++++++++++++++++
-    //load and save
-    //++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++
+    //Save and Load Data-Methods    +
+    //+++++++++++++++++++++++++++++++
 
 
     public void saveData(List<WebsiteButton> dataList, boolean override) {
-        dataHandler.save(Arrays.asList(dataList.toArray()), override);
+        dataHandler.save(new ArrayList<>(Arrays.asList(dataList)), override);
     }
 
     public ObservableList<WebsiteButton> loadData() {
@@ -84,15 +65,25 @@ public class Model {
         return FXCollections.observableArrayList(websiteButtonList);
     }
 
-    //+++++++++++++++++++++++++
-    //getter and setter
-    //++++++++++++++++++++++++++++++
-
-    public ObservableList<WebsiteButton> getWebsiteButtons() {
-        return websiteButtons;
-    }
+    //+++++++++++++++++++++++++++++++
+    //getter and setter             +
+    //+++++++++++++++++++++++++++++++
 
     public Stage getStage() {
         return stage;
+    }
+
+    public List<WebsiteButton> getWebsiteButtons() {
+        return websiteButtons;
+    }
+
+    public void addWebsiteButton(WebsiteButton websiteButton){
+        websiteButtons.add(websiteButton);
+        //add Funktionality: actualise Data and/or Screen
+    }
+
+    public void removeWebsiteButton(WebsiteButton websiteButton){
+        websiteButtons.remove(websiteButton);
+        //add Funktionality: actualise Data and/or Screen
     }
 }

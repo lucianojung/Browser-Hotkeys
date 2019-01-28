@@ -2,11 +2,7 @@ package de.Jung.Luciano;
 
 import de.Jung.Luciano.Controller.Controller;
 import de.Jung.Luciano.Model.Model;
-import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {

@@ -1,4 +1,4 @@
-package de.Jung.Luciano.Data_Handler;
+package de.Jung.Luciano.Model;
 
 import java.util.List;
 

@@ -1,0 +1,28 @@
+ToDo:
+- structure
+- save in Model
+- load in Model
+- Add Website
+- Edit Website
+- Remove Website
+- buttons:
+    -> Open
+    -> Save
+    -> SaveAs
+    -> Load
+
+Optional:
+- Shortcuts für Websites
+- Autosave Checkbox
+- mit Mausrad Farbe eines Buttons ändern
+- rechtsklick Edit
+- Add Button am Ende des FlowPanes
+- zu Shortcuts:
+    - Bei mehreren Treffern: alle nicht zutreffenbden Buttons entfernen
+    - mit ESC alle wieder anzeigen
+
+
+
+    //+++++++++++++++++++++++++++++++
+    //                              +
+    //+++++++++++++++++++++++++++++++

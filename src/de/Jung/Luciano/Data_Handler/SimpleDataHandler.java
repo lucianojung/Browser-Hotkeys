@@ -1,12 +1,14 @@
 package de.Jung.Luciano.Data_Handler;
 
+import de.Jung.Luciano.Model.SimpleDataInterface;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleDataHandler implements SimpleDataInterface{
+public class SimpleDataHandler implements SimpleDataInterface {
 
     /*
      * class for simple save and load objects in a List

@@ -3,7 +3,9 @@
 small JavaFX project to save Website URL simply in an TableView
 and give them a Shortcut
 
-Functionality:
+
+
+Functionality of old Version:
 - Add Website
   -> Dialog with GridPane ask for URLName, URL and KeyCode (Shortcut)
 - Edit Website
