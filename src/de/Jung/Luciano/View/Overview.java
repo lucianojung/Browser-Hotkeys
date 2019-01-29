@@ -3,10 +3,7 @@ package de.Jung.Luciano.View;
 import de.Jung.Luciano.Model.Model;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -28,6 +25,8 @@ public class Overview {
     MenuItem menuItemAdd;
     MenuItem menuItemEdit;
     MenuItem menuItemRemove;
+    //others
+    Button addButton;
 
     public Overview() {
         //set Layouts
@@ -53,12 +52,19 @@ public class Overview {
         menuBar.getMenus().addAll(menuAction, menuEdit);
         root.setTop(menuBar);
 
+        addButton = new Button("+");
+        addButton.getStyleClass().add("addButton");
+        addButton.setOnAction(event -> menuItemAdd.fire());
+        flowPane.getChildren().add(addButton);
+
         //flowPane
         flowPane.setPadding(new Insets(5));
         flowPane.setHgap(5);
         flowPane.setVgap(5);
         flowPane.setOnContextMenuRequested(event -> contextMenuEdit.show(flowPane, event.getScreenX(), event.getScreenY()));
         root.setCenter(flowPane);
+        root.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
+
     }
 
     //+++++++++++++++++++++++++++++++
@@ -68,6 +74,7 @@ public class Overview {
     public void show(Model model) {
         flowPane.getChildren().clear();
         flowPane.getChildren().addAll(model.getWebsiteButtons());
+        flowPane.getChildren().add(addButton);
 
         Stage stage = model.getStage();
         if (stage.isShowing()) return;

@@ -1,0 +1,12 @@
+.button{
+    -fx-text-fill: black;
+    -fx-font: bold 18px "Georgia";
+    -fx-text-alignment: center;
+}
+.addButton{
+     -fx-text-fill: black;
+     -fx-font: bold 20px "Georgia";
+     -fx-text-alignment: center;
+     -fx-background-color: white, black, black, darkgrey, lightgrey, white;
+     -fx-cell-size: 40, 40;
+ }

@@ -5,19 +5,18 @@ ToDo:
 - Add Website
 - Edit Website
 - Remove Website
+- rechtsklick Edit
 - buttons:
     -> Open
     -> Save
     -> SaveAs
 
--> --Iterator--
 Optional:
 - bigger Buttons
-- Shortcuts für Websites
-- Autosave Checkbox
 - mit Mausrad Farbe eines Buttons ändern
-- rechtsklick Edit
 - Add Button am Ende des FlowPanes
+-> --Iterator--
+- Shortcuts für Websites
 - zu Shortcuts:
     - Bei mehreren Treffern: alle nicht zutreffenbden Buttons entfernen
     - mit ESC alle wieder anzeigen

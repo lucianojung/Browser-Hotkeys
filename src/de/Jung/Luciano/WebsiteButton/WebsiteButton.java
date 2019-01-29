@@ -2,16 +2,15 @@ package de.Jung.Luciano.WebsiteButton;
 
 import de.Jung.Luciano.Controller.ApplicationFassade;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 import java.util.Random;
 
 public class WebsiteButton extends Button {
 
-    String url;
+    private String url;
+    private static final int BUTTONSIZE = 40;
 
     public WebsiteButton(){
         this(null, null);
@@ -21,6 +20,8 @@ public class WebsiteButton extends Button {
         super(name);
         this.url = url;
         this.setStyle("-fx-background-color: " + this.getRandomColor());
+        this.getStyleClass().add("button");
+        this.setMinSize(BUTTONSIZE, BUTTONSIZE);
 
         //Listener
         this.setOnAction(event -> handleWebsiteButton(event));
@@ -54,7 +55,7 @@ public class WebsiteButton extends Button {
         do {
             nextInt = random.nextInt(0xffffff + 1);
         }
-        while (nextInt < 12000000);
+        while (nextInt < 10000000);
 
         String color = String.format("#%06x", nextInt);
         return color;
