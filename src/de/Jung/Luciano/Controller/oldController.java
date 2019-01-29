@@ -69,7 +69,7 @@ public class oldController {
 
 
     private void handleMenuItemSave(ActionEvent event) {
-        model.saveData(model.getWebsiteButtons(), true);
+        model.saveData(true);
     }
 
     private void handleMenuItemLoad(ActionEvent event) {

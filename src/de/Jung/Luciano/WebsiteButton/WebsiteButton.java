@@ -54,7 +54,7 @@ public class WebsiteButton extends Button {
         do {
             nextInt = random.nextInt(0xffffff + 1);
         }
-        while (nextInt < 10000000);
+        while (nextInt < 12000000);
 
         String color = String.format("#%06x", nextInt);
         return color;

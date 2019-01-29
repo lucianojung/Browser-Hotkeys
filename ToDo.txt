@@ -3,16 +3,16 @@ ToDo:
 - save in Model
 - load in Model
 - Add Website
--> --Iterator--
 - Edit Website
 - Remove Website
 - buttons:
     -> Open
     -> Save
     -> SaveAs
-    -> Load
 
+-> --Iterator--
 Optional:
+- bigger Buttons
 - Shortcuts für Websites
 - Autosave Checkbox
 - mit Mausrad Farbe eines Buttons ändern

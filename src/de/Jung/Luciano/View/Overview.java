@@ -1,7 +1,10 @@
 package de.Jung.Luciano.View;
 
+import de.Jung.Luciano.Model.Model;
+import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
@@ -66,7 +69,12 @@ public class Overview {
     //other methods                 +
     //+++++++++++++++++++++++++++++++
 
-    public void show(Stage stage) {
+    public void show(Model model) {
+        flowPane.getChildren().clear();
+        flowPane.getChildren().addAll(model.getWebsiteButtons());
+
+        Stage stage = model.getStage();
+        if (stage.isShowing()) return;
         stage.setTitle("Website Shortcuts");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();

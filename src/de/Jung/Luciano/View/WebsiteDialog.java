@@ -71,7 +71,7 @@ public class WebsiteDialog extends Dialog {
     }
 
     public boolean showRemoveDialog(WebsiteButton websiteButton){
-        this.setTitle("Want to Remove " + websiteButton.getText() + "?");
+        this.setTitle(websiteButton != null ? "Want to Remove " + websiteButton.getText() + "?" : "Override Data?");
         this.getDialogPane().setContent(null);
 
         Optional result = this.showAndWait();
