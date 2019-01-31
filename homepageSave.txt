@@ -1,1 +1,2 @@
-Homepage,https://lucianojung.jimdofree.com/,
+C:\Users\Luciano\Dropbox\DiverseProjects\IntelliJProjects\ShortcutsFirefox\homepageSave.txt,
+Homepage,https://lucianojung.jimdofree.com/,file:/C:/Users/Luciano/Dropbox/DiverseProjects/IntelliJProjects/ShortcutsFirefox/src/de/Jung/Luciano/images/Blitz.png,

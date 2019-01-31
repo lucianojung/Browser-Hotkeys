@@ -49,7 +49,7 @@ public class Controller {
         view.getMenuItemRemove().setOnAction(this::handleRemoveWebsite);
         view.getFlowPane().setOnContextMenuRequested(event -> view.getContextMenuEdit().show(view.getFlowPane(), event.getScreenX(), event.getScreenY()));
         view.getAddButton().setOnAction(this::handleAddWebsite);
-        model.getStage().setOnCloseRequest(event -> handleSave(null));
+        model.getStage().setOnCloseRequest(event -> handleExit());
         view.getFlowPane().setOnKeyPressed(this::handleKeyPressed);
 
         //show first View (Overview)
@@ -74,7 +74,7 @@ public class Controller {
 
     private void handleSave(ActionEvent event) {
         if (model.isTempDataChanged() && dialog.showSaveDialog())
-            model.saveData();
+            model.saveData(model.getFileName());
     }
 
     private void handleSaveAs(ActionEvent event) {
@@ -82,7 +82,16 @@ public class Controller {
         //save Data in Directory "file"
         if (file == null) return;
         model.setFileName(file.toString());
-        model.saveData();
+        model.loadData();
+        model.saveData(model.getFileName());
+    }
+
+    private void handleExit() {
+        handleSave(null);
+        String tempFileName = model.getFileName();
+        model.setFileName("save.txt");
+        model.loadData();
+        model.saveData(tempFileName);
     }
 
     private void handleAddWebsite(ActionEvent event) {

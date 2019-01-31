@@ -21,10 +21,10 @@ Optional:
 - zu Shortcuts:
     - Bei mehreren Treffern: alle nicht zutreffenbden Buttons entfernen
     - mit ESC alle wieder anzeigen
--> --Iterator--
 - Image to each Button
 - first Line in save.txt for alternative saved Place
 
+-> --Iterator--
 - add open Programs instead of only websites
 
 

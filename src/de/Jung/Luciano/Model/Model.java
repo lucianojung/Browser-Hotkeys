@@ -3,21 +3,21 @@ package de.Jung.Luciano.Model;
 import de.Jung.Luciano.Data_Handler.SimpleDataHandler;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Model {
 
     private Stage stage;
     private List<WebsiteButton> websiteButtons, shownWebsiteButtons;        //maybe seperated List for shown WebsiteButtons, because of Shortcut search
     private SimpleDataInterface dataHandler;
-    private String fileName = new File("save.txt").toString();
+    private String fileName = "save.txt";
+    private String alternativeFile = fileName;
     private String inputText = "";
     private boolean tempDataChanged;
 
@@ -38,10 +38,14 @@ public class Model {
         */
         dataHandler.save(new ArrayList<>(), false);
         this.loadData();
-        if (websiteButtons.size() == 0) return;
-        //else
-        System.out.println("File have Data in it! Loading...");
         tempDataChanged = false;
+
+        if (!new File(this.alternativeFile).isFile()) alternativeFile = "save.txt";
+        if (this.fileName.equals(alternativeFile)) return;
+
+        setFileName(alternativeFile);
+        System.out.println(fileName);
+        this.loadData();
     }
 
     //+++++++++++++++++++++++++++++++
@@ -49,13 +53,14 @@ public class Model {
     //+++++++++++++++++++++++++++++++
 
 
-    public void saveData() {
+    public void saveData(String file) {
         /*
         * for each WebsiteButton from dataList
         *   create one Object of WebsiteButton
         * save Data via SimpleDataInterface (uses toString()-Method, to save Object Data)
         */
-        List<Object> objects = new ArrayList<>(websiteButtons);
+        List<Object> objects = new ArrayList<>(Collections.singletonList(file));
+        objects.addAll(websiteButtons);
         System.out.println("Saving Data: " + objects.size() + " Objects");
         websiteButtons.sort(Comparator.comparing(Labeled::getText));
         dataHandler.save(objects, true);
@@ -76,10 +81,16 @@ public class Model {
         if(!new File(fileName).isFile()) return;
 
         List<Object> rawData = dataHandler.load();
+
         for (Object websiteButton : rawData){
             String[] strings = websiteButton.toString().split(",");
-            if (strings.length != 2) continue;
-                addWebsiteButton(new WebsiteButton(strings[0], strings[1]));
+            if (strings.length == 3) {
+                addWebsiteButton(new WebsiteButton(strings[0], strings[1], strings[2]));
+            } else if (strings.length == 2)
+                addWebsiteButton(new WebsiteButton(strings[0], strings[1], ""));
+            else if (strings.length == 1)
+                alternativeFile = strings[0];
+
         }
         System.out.println("Load Data, Found " + websiteButtons.size() + " WebsiteButtons!");
         this.websiteButtons.sort(Comparator.comparing(Labeled::getText));
@@ -95,12 +106,6 @@ public class Model {
         websiteButtons.sort(Comparator.comparing(Labeled::getText));
         filterShownWebsiteButtons();
         tempDataChanged = true;
-    }
-
-    private void addAllWebsiteButtons(List<WebsiteButton> list){
-        for (WebsiteButton websiteButton : list){
-            addWebsiteButton(websiteButton);
-        }
     }
 
     public void removeWebsiteButton(WebsiteButton websiteButton){
@@ -141,6 +146,10 @@ public class Model {
     public void setFileName(String fileName) {
         this.fileName = fileName;
         this.dataHandler = new SimpleDataHandler(fileName);
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public boolean isTempDataChanged() {

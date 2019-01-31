@@ -1,12 +1,15 @@
 package de.Jung.Luciano.View;
 
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.event.ActionEvent;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 
@@ -14,6 +17,9 @@ public class WebsiteDialog extends Dialog {
     //Layout with Nodes
     private GridPane gridPane;
     private TextField textFieldName, textFieldUrl;
+    private Label labelImageUrl;
+    private Button buttonAddImage;
+    private String imageUrl;
 
     //+++++++++++++++++++++++++++++++
     //Constructor                   +
@@ -28,14 +34,39 @@ public class WebsiteDialog extends Dialog {
         textFieldName.setPromptText("Website XY");
         textFieldUrl = new TextField();
         textFieldUrl.setPromptText("www.thePage.de");
+        labelImageUrl = new Label("Website Image");
+        buttonAddImage = new Button("Add Image");
 
         gridPane.add(labelName, 0, 0);
         gridPane.add(labelUrl, 0, 1);
+        gridPane.add(labelImageUrl, 0, 2);
         gridPane.add(textFieldName, 1, 0);
         gridPane.add(textFieldUrl, 1, 1);
+        gridPane.add(buttonAddImage, 1, 2);
 
         this.getDialogPane().getButtonTypes().add(0, ButtonType.OK);
         this.getDialogPane().getButtonTypes().add(1, ButtonType.CANCEL);
+
+        //Listener
+        buttonAddImage.setOnAction(this::handleAddImage);
+    }
+
+    //+++++++++++++++++++++++++++++++
+    //Event Handler                 +
+    //+++++++++++++++++++++++++++++++
+
+    private void handleAddImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter fileExtension = new FileChooser.ExtensionFilter("ImageFile", "*.png", "*.gif", "*.jpg", "*.jpeg", "*.tiff", "*.tif", "*.bmp", "*.dib");
+        fileChooser.getExtensionFilters().add(fileExtension);
+        fileChooser.setInitialDirectory(new File("."));
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file == null) return;
+        if (!file.isFile()) return;
+
+        imageUrl = file.toURI().toString();
+        buttonAddImage.setText(file.getName());
     }
 
     //+++++++++++++++++++++++++++++++
@@ -61,6 +92,8 @@ public class WebsiteDialog extends Dialog {
 
         websiteButton.setText(textFieldName.getText());
         websiteButton.setUrl(textFieldUrl.getText());
+        if (!buttonAddImage.getText().equals("Add Image"))
+            websiteButton.setImageUrl(imageUrl);
         return websiteButton;
     }
 

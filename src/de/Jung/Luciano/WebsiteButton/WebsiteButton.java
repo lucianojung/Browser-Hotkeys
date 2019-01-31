@@ -1,8 +1,9 @@
 package de.Jung.Luciano.WebsiteButton;
 
 import de.Jung.Luciano.Controller.ApplicationFacade;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 
 import java.util.Random;
@@ -10,15 +11,19 @@ import java.util.Random;
 public class WebsiteButton extends Button {
 
     private String url;
+    private String imageUrl;
     private static final int BUTTONSIZE = 40;
 
     public WebsiteButton(){
-        this(null, null);
+        this(null, null, "");
     }
 
-    public WebsiteButton(String name, String url) {
+    public WebsiteButton(String name, String url, String imageUrl) {
         super(name);
         this.url = url;
+        if (!imageUrl.equals("null") && !imageUrl.equals(""))
+            this.setImageUrl(imageUrl);
+
         this.setStyle("-fx-background-color: " + this.getRandomColor());
         this.setMinSize(BUTTONSIZE, BUTTONSIZE);
 
@@ -26,11 +31,12 @@ public class WebsiteButton extends Button {
         ApplicationFacade facade = new ApplicationFacade();
         this.setOnAction(event -> facade.showWebsite(url));
         this.addEventHandler(ScrollEvent.SCROLL, event -> this.setStyle("-fx-background-color: " + this.getRandomColor()));
+
     }
 
     @Override
     public String toString(){
-        return this.getText() + "," + this.getUrl();
+        return this.getText() + "," + this.getUrl() + "," + this.imageUrl;
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -60,5 +66,19 @@ public class WebsiteButton extends Button {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+
+        ImageView imageView = new ImageView(new Image(imageUrl));
+        imageView.setFitWidth(16);
+        imageView.setFitHeight(16);
+        imageView.setPreserveRatio(true);
+        this.setGraphic(imageView);
     }
 }

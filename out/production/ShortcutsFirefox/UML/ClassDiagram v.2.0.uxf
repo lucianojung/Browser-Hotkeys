@@ -234,7 +234,7 @@ showWebsite(url: String): void</panel_attributes>
       <x>1060</x>
       <y>450</y>
       <w>400</w>
-      <h>170</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Class&gt;&gt;
 WebsiteDialog
@@ -444,7 +444,7 @@ m2=1</panel_attributes>
       <x>1070</x>
       <y>660</y>
       <w>300</w>
-      <h>290</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Class&gt;&gt;
 Overview

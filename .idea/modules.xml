@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ShortcutsFirefox.iml" filepath="$PROJECT_DIR$/ShortcutsFirefox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Browser Hotkeys.iml" filepath="$PROJECT_DIR$/Browser Hotkeys.iml" />
     </modules>
   </component>
 </project>

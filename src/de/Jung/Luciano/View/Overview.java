@@ -90,7 +90,7 @@ public class Overview {
     //+++++++++++++++++++++++++++++++
 
     public void show(Stage stage) {
-        stage.setTitle("Website Shortcuts");
+        stage.setTitle("Browser Hotkeys");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
     }
