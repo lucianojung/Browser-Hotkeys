@@ -9,16 +9,34 @@ import javafx.scene.input.ScrollEvent;
 import java.util.Random;
 
 public class WebsiteButton extends Button {
+    /*
+    * Objects for specialized Button
+    * - String url (to show right Website)
+    * - String imageUrl (to show an Image if you want)
+    * - FINAL int for minButtonSize
+    */
 
     private String url;
     private String imageUrl;
     private static final int BUTTONSIZE = 40;
+
+    //+++++++++++++++++++++++++++++++
+    //Constructors                  +
+    //+++++++++++++++++++++++++++++++
 
     public WebsiteButton(){
         this(null, null, "");
     }
 
     public WebsiteButton(String name, String url, String imageUrl) {
+        /*
+        * calls super with WebsiteName
+        * set url
+        * set imageUrl if not null (that will set the Graphic too)
+        * set "special" Style
+        * set Min Size
+        * add Listener (create facade to call showWebsite(url))
+        */
         super(name);
         this.url = url;
         if (!imageUrl.equals("null") && !imageUrl.equals(""))
@@ -34,21 +52,25 @@ public class WebsiteButton extends Button {
 
     }
 
+    //+++++++++++++++++++++++++++++++
+    //toString() overridden         +
+    //+++++++++++++++++++++++++++++++
+
     @Override
     public String toString(){
         return this.getText() + "," + this.getUrl() + "," + this.imageUrl;
     }
 
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++
-    //getter and setter
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++
+    //getter and setter             +
+    //+++++++++++++++++++++++++++++++
 
     public String getRandomColor() {
         /*
         * create Object of Class Random
         * create randomNumber with max ffffff (hex) = 16777215
         * format it as Hexadezimal String
-        * return color
+        * returns color as String
         */
         Random random = new Random();
         int nextInt;
@@ -68,11 +90,13 @@ public class WebsiteButton extends Button {
         this.url = url;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
     public void setImageUrl(String imageUrl) {
+        /*
+        * set new imageUrl
+        * create new ImageView
+        * -> set "perfect" Size
+        * set ImageView as Graphic in Button
+        */
         this.imageUrl = imageUrl;
 
         ImageView imageView = new ImageView(new Image(imageUrl));

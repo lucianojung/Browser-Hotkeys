@@ -2,10 +2,10 @@ package de.Jung.Luciano.Model;
 
 import de.Jung.Luciano.Data_Handler.SimpleDataHandler;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Labeled;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -13,8 +13,20 @@ import java.util.*;
 
 public class Model {
 
+    /*
+    * Objects of:
+    * - Stage
+    * - Lists of WebsiteButtons (Saved Ones and shown)
+    * - DataInterface for save(List)- and load()-Method
+    * - Strings:
+    *   -> Name of actual File
+    *   -> Name of File to open when Application start instead of default Location
+    *   -> InputText of Keyboard Input
+    * - boolean if data changed since last Save
+    */
     private Stage stage;
-    private List<WebsiteButton> websiteButtons, shownWebsiteButtons;        //maybe seperated List for shown WebsiteButtons, because of Shortcut search
+    private List<WebsiteButton> websiteButtons;
+    private ObservableList<Node> shownWebsiteButtons;
     private SimpleDataInterface dataHandler;
     private String fileName = "save.txt";
     private String alternativeFile = fileName;
@@ -26,25 +38,26 @@ public class Model {
     //+++++++++++++++++++++++++++++++
 
     public Model(Stage stage) {
+        /*
+        * saves stage
+        * initialize Lists and dataHandler
+        * loads Data
+        * look if first Line is another File, if true
+        * -> is it a valid File?
+        * -> is it not the same File?
+        *   -> if both true set new FileName and load again
+        */
         this.stage = stage;
         this.websiteButtons = new ArrayList<>();
-        this.shownWebsiteButtons = new ArrayList<>();
-        this.dataHandler = new SimpleDataHandler();                  //add fileName in Constructor to save it somewhere else
+        this.shownWebsiteButtons = FXCollections.observableArrayList();
+        this.dataHandler = new SimpleDataHandler();                                                                     //add fileName in Constructor to save it somewhere else
 
-        /*
-        * test if the File exists and has already Data
-        * if size() of the data loaded is > 0 means it has!
-        * if it has load the Data
-        */
-        dataHandler.save(new ArrayList<>(), false);
         this.loadData();
-        tempDataChanged = false;
 
-        if (!new File(this.alternativeFile).isFile()) alternativeFile = "save.txt";
+        if (!new File(this.alternativeFile).isFile()) return;
         if (this.fileName.equals(alternativeFile)) return;
 
         setFileName(alternativeFile);
-        System.out.println(fileName);
         this.loadData();
     }
 
@@ -80,7 +93,7 @@ public class Model {
         websiteButtons.clear();
         if(!new File(fileName).isFile()) return;
 
-        List<Object> rawData = dataHandler.load();
+        List<String> rawData = dataHandler.load();
 
         for (Object websiteButton : rawData){
             String[] strings = websiteButton.toString().split(",");
@@ -93,8 +106,8 @@ public class Model {
 
         }
         System.out.println("Load Data, Found " + websiteButtons.size() + " WebsiteButtons!");
-        this.websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        this.filterShownWebsiteButtons();
+        websiteButtonsChanged();
+        tempDataChanged = false;
     }
 
     //+++++++++++++++++++++++++++++++
@@ -102,22 +115,39 @@ public class Model {
     //+++++++++++++++++++++++++++++++
 
     public void addWebsiteButton(WebsiteButton websiteButton){
+        /*
+        * add websiteButton to List
+        * handles websiteButtons changed
+        */
         websiteButtons.add(websiteButton);
-        websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        filterShownWebsiteButtons();
-        tempDataChanged = true;
+        websiteButtonsChanged();
     }
 
     public void removeWebsiteButton(WebsiteButton websiteButton){
+        /*
+        * removes websiteButton
+        * handles websiteButtons changed
+        */
         websiteButtons.remove(websiteButton);
-        websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        filterShownWebsiteButtons();
-        //add Functionality: actualise Data and/or Screen
+        websiteButtonsChanged();
     }
+
 
     //+++++++++++++++++++++++++++++++
     //other methods                 +
     //+++++++++++++++++++++++++++++++
+
+    private void websiteButtonsChanged() {
+        /*
+        * called if websiteButtons-List has changed
+        * -> sort List
+        * filter shown Elements
+        * set changedData true
+        */
+        websiteButtons.sort(Comparator.comparing(Labeled::getText));
+        filterShownWebsiteButtons();
+        tempDataChanged = true;
+    }
 
     private void filterShownWebsiteButtons(){
         shownWebsiteButtons.clear();
@@ -139,11 +169,15 @@ public class Model {
         return stage;
     }
 
-    public List<WebsiteButton> getShownWebsiteButtons() {
+    public ObservableList<Node> getShownWebsiteButtons() {
         return shownWebsiteButtons;
     }
 
     public void setFileName(String fileName) {
+        /*
+        * if new fileName set
+        * create new SimpleDataHandler with it
+        */
         this.fileName = fileName;
         this.dataHandler = new SimpleDataHandler(fileName);
     }
@@ -158,6 +192,7 @@ public class Model {
 
     public void setInputText(String inputText) {
         this.inputText = inputText;
+        //filers the InputText when it changes
         filterShownWebsiteButtons();
     }
 

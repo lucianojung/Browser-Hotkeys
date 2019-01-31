@@ -1,15 +1,13 @@
 package de.Jung.Luciano.View;
 
-import de.Jung.Luciano.Model.Model;
-import de.Jung.Luciano.WebsiteButton.WebsiteButton;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class Overview {
 
@@ -22,10 +20,10 @@ public class Overview {
     *
     * created by Controller
     * uses StyleSheet: style.css
+    *
     * has getter for Nodes
-    * has a show()-Method
-    *   -> actualize the Buttons in the FlowPane
-    *   -> shows root in Stage if not shown
+    * has a show()-Method to show Stage with root
+    * has a refresh-Method to refresh the WebsiteButtons in the flowPane
     *
     * EventListener:
     *   - flowPane.setOnContextMenuRequested() -> for RightClick Menu
@@ -95,7 +93,7 @@ public class Overview {
         stage.show();
     }
 
-    public void refreshView(List<WebsiteButton> websiteButtons){
+    public void refreshView(ObservableList<Node> websiteButtons){
         flowPane.getChildren().clear();
         flowPane.getChildren().addAll(websiteButtons);
         flowPane.getChildren().add(addButton);

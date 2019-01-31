@@ -1,4 +1,4 @@
-package de.Jung.Luciano;
+package de.Jung.Luciano.Main;
 
 import de.Jung.Luciano.Controller.Controller;
 import de.Jung.Luciano.Model.Model;
@@ -10,6 +10,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        /*
+        * creates the Model
+        * creates Controller with model
+        */
         Model model = new Model(primaryStage);
 
         new Controller(model);

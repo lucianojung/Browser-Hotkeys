@@ -4,7 +4,11 @@ import java.util.List;
 
 public interface SimpleDataInterface {
 
+    /*
+    * interface for saving and loading Data
+    */
+
     void save(List<Object> objects, boolean override);
 
-    List<Object> load();
+    List<String> load();
 }

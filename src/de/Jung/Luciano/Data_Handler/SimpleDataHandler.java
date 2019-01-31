@@ -15,10 +15,13 @@ public class SimpleDataHandler implements SimpleDataInterface {
      * Writing via FileWriter and BufferedWriter
      * Reading via BufferedReader
      *
-     * take a List<List<String>> when save
-     * -> so you have the inner List for an Object with its param
-     * -> and you can give various Object Param
-     * gives back a List<List<String>> when load
+     * save(List<Object>)-Method
+     * -> uses toString-Method from Object to store data
+     * -> data stored in a simple *.txt File
+     *
+     * load()-Method
+     * -> return a List<Object>
+     * -> simply the Strings per Line
      *
      * define the Path with <fileName>
      * */
@@ -30,11 +33,16 @@ public class SimpleDataHandler implements SimpleDataInterface {
     //++++++++++++++++++++++++++++++++
 
     public SimpleDataHandler(String fileName) {
+        /*
+        * stores fileName given (default: save.txt)
+        * save and load data first time
+        * -> doesnt override data
+        * -> creates file if it hadn't exists yet
+        */
         this.fileName = fileName;
-        save(new ArrayList<>(), false);
-        if (load().size() == 0) return;
-        //else show the User, that the File already Exists before and have text in it
-        System.out.println("File is not Empty");
+        this.save(new ArrayList<>(), false);
+        if (load().size() > 0)
+            System.out.println("File is not Empty");
     }
 
     public SimpleDataHandler() {
@@ -49,25 +57,35 @@ public class SimpleDataHandler implements SimpleDataInterface {
     @Override
     public void save(List<Object> dataList, boolean override) {
         try {
-            //override if true
-            if (override){
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName));
+            /*
+            * override data first If true
+            * -> creates a bufferedWriter
+            * -> override with empty String
+            * -> close bufferedWriter
+            *
+            * creates new BufferedWriter (append is true)
+            * -> append object.toString() for each object from the List
+            * -> make a new Line for each object
+            * -> close bufferedWriter
+            *
+            * catches IOException and NullPointerException
+            */
+            FileWriter fileWriter;
+            if (override){                                                                                              //overrides all data if true
+                fileWriter = new FileWriter(fileName);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write("");
                 bufferedWriter.close();
             }
-            //create fileWriter and BufferedWriter
-            FileWriter fileWriter = new FileWriter(fileName, true);
+
+            fileWriter = new FileWriter(fileName, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            /*append the data for each String in the Data Komplex
-            * the inner List is for one Object-Data seperated with ,
-            * the outer list is for various of object-data seperated with a new Line
-            */
             for (Object objects : dataList) {
-                bufferedWriter.append(objects.toString()).append(",");
+                bufferedWriter.append(objects.toString());
                 bufferedWriter.newLine();
             }
-            //close bufferedWriter and return
             bufferedWriter.close();
+            fileWriter.close();
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
@@ -75,8 +93,13 @@ public class SimpleDataHandler implements SimpleDataInterface {
 
 
     @Override
-    public List<Object> load() {
-        List<Object> dataList = new ArrayList<>();
+    public List<String> load() {
+        /*
+        * saves in a dataList each Line in one String
+        * -> Uses BufferedReader with the fileName
+        * -> returns the List
+        */
+        List<String> dataList = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);

@@ -1,4 +1,9 @@
 ToDo:
+
+//+++++++++++++++++++++++++++++++
+//Versiom 2.0                   +
+//+++++++++++++++++++++++++++++++
+
 - structure
 - save in Model
 - load in Model
@@ -18,13 +23,28 @@ Optional:
 - reduce loading and saving
 - define Listener for WebsiteButtons
 - Shortcuts für Websites
+
+//+++++++++++++++++++++++++++++++
+//Versiom 2.1                   +
+//+++++++++++++++++++++++++++++++
+
 - zu Shortcuts:
     - Bei mehreren Treffern: alle nicht zutreffenbden Buttons entfernen
     - mit ESC alle wieder anzeigen
 - Image to each Button
 - first Line in save.txt for alternative saved Place
-
+- actualize README.md in Branch
+- add useful comments in Code
 -> --Iterator--
+- release v.2.1
+
+//+++++++++++++++++++++++++++++++
+//Versiom 2.2                   +
+//+++++++++++++++++++++++++++++++
+
+- remove Images
+- add close when Website open (with save changes dialog!)
+- settings for example Image Size -> need own model with DataHandler
 - add open Programs instead of only websites
 
 

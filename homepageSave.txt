@@ -1,2 +1,3 @@
-C:\Users\Luciano\Dropbox\DiverseProjects\IntelliJProjects\ShortcutsFirefox\homepageSave.txt,
-Homepage,https://lucianojung.jimdofree.com/,file:/C:/Users/Luciano/Dropbox/DiverseProjects/IntelliJProjects/ShortcutsFirefox/src/de/Jung/Luciano/images/Blitz.png,
+save.txt
+Google,https://www.google.de,file:/C:/Users/Luciano/Dropbox/DiverseProjects/IntelliJProjects/ShortcutsFirefox/src/de/Jung/Luciano/images/Blitz.png,
+Homepage,https://lucianojung.jimdofree.com/,https://image.jimcdn.com/app/cms/image/transf/none/path/sea20628f67c63520/image/i4a2de3309741e725/version/1546042346/image.jpg
