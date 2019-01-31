@@ -15,12 +15,17 @@ Optional:
 - bigger Buttons
 - mit Mausrad Farbe eines Buttons ändern
 - Add Button am Ende des FlowPanes
--> --Iterator--
+- reduce loading and saving
+- define Listener for WebsiteButtons
 - Shortcuts für Websites
 - zu Shortcuts:
     - Bei mehreren Treffern: alle nicht zutreffenbden Buttons entfernen
     - mit ESC alle wieder anzeigen
+-> --Iterator--
+- Image to each Button
+- first Line in save.txt for alternative saved Place
 
+- add open Programs instead of only websites
 
 
     //+++++++++++++++++++++++++++++++

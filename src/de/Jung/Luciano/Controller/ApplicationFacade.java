@@ -3,7 +3,7 @@ package de.Jung.Luciano.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class ApplicationFassade extends Application {
+public class ApplicationFacade extends Application {
     /*
     * simple Class to show a Url in the default Browser
     * exists, so you dont have to extend Application in each Class you want to load a Website URL

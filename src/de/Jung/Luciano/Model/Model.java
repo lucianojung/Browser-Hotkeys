@@ -2,23 +2,24 @@ package de.Jung.Luciano.Model;
 
 import de.Jung.Luciano.Data_Handler.SimpleDataHandler;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Labeled;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Model {
 
     private Stage stage;
-    private List<WebsiteButton> websiteButtons;
+    private List<WebsiteButton> websiteButtons, shownWebsiteButtons;        //maybe seperated List for shown WebsiteButtons, because of Shortcut search
     private SimpleDataInterface dataHandler;
-    private String fileName = "C:\\Users\\Public\\Documents\\savedWebsiteLinks.txt";
+    private String fileName = new File("save.txt").toString();
+    private String inputText = "";
+    private boolean tempDataChanged;
 
     //+++++++++++++++++++++++++++++++
     //constructor                   +
@@ -27,6 +28,7 @@ public class Model {
     public Model(Stage stage) {
         this.stage = stage;
         this.websiteButtons = new ArrayList<>();
+        this.shownWebsiteButtons = new ArrayList<>();
         this.dataHandler = new SimpleDataHandler();                  //add fileName in Constructor to save it somewhere else
 
         /*
@@ -35,33 +37,32 @@ public class Model {
         * if it has load the Data
         */
         dataHandler.save(new ArrayList<>(), false);
-        List<WebsiteButton> data = loadData();
-        if (data.size() == 0) return;
+        this.loadData();
+        if (websiteButtons.size() == 0) return;
         //else
         System.out.println("File have Data in it! Loading...");
-        addAllWebsiteButtons(data);
+        tempDataChanged = false;
     }
 
     //+++++++++++++++++++++++++++++++
-    //Save and Load Data-Methods    +
+    //save and load Data            +
     //+++++++++++++++++++++++++++++++
 
 
-    public void saveData(boolean override) {
+    public void saveData() {
         /*
         * for each WebsiteButton from dataList
         *   create one Object of WebsiteButton
         * save Data via SimpleDataInterface (uses toString()-Method, to save Object Data)
         */
-        List<Object> objects = new ArrayList<>();
-        for (WebsiteButton websiteButton : websiteButtons){
-            objects.add(websiteButton);
-        }
+        List<Object> objects = new ArrayList<>(websiteButtons);
         System.out.println("Saving Data: " + objects.size() + " Objects");
-        dataHandler.save(objects, override);
+        websiteButtons.sort(Comparator.comparing(Labeled::getText));
+        dataHandler.save(objects, true);
+        tempDataChanged = false;
     }
 
-    public List<WebsiteButton> loadData() {
+    public void loadData() {
         /*
         * if (fileName is no File) return
         * else:
@@ -71,18 +72,58 @@ public class Model {
         *       if yes: add a new WebsiteButton to first List (String[0] = Name, String[1] = Url)
         *   return first List
         */
-        if(!new File(fileName).isFile()) return null;
-        List<WebsiteButton> websiteButtonList = new ArrayList<>();
+        websiteButtons.clear();
+        if(!new File(fileName).isFile()) return;
 
         List<Object> rawData = dataHandler.load();
         for (Object websiteButton : rawData){
             String[] strings = websiteButton.toString().split(",");
             if (strings.length != 2) continue;
-            websiteButtonList.add(new WebsiteButton(strings[0], strings[1]));
+                addWebsiteButton(new WebsiteButton(strings[0], strings[1]));
         }
-        System.out.println("Load Data, Found " + websiteButtonList.size() + " WebsiteButtons!");
+        System.out.println("Load Data, Found " + websiteButtons.size() + " WebsiteButtons!");
+        this.websiteButtons.sort(Comparator.comparing(Labeled::getText));
+        this.filterShownWebsiteButtons();
+    }
+
+    //+++++++++++++++++++++++++++++++
+    //add and remove                +
+    //+++++++++++++++++++++++++++++++
+
+    public void addWebsiteButton(WebsiteButton websiteButton){
+        websiteButtons.add(websiteButton);
         websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        return websiteButtonList;
+        filterShownWebsiteButtons();
+        tempDataChanged = true;
+    }
+
+    private void addAllWebsiteButtons(List<WebsiteButton> list){
+        for (WebsiteButton websiteButton : list){
+            addWebsiteButton(websiteButton);
+        }
+    }
+
+    public void removeWebsiteButton(WebsiteButton websiteButton){
+        websiteButtons.remove(websiteButton);
+        websiteButtons.sort(Comparator.comparing(Labeled::getText));
+        filterShownWebsiteButtons();
+        //add Functionality: actualise Data and/or Screen
+    }
+
+    //+++++++++++++++++++++++++++++++
+    //other methods                 +
+    //+++++++++++++++++++++++++++++++
+
+    private void filterShownWebsiteButtons(){
+        shownWebsiteButtons.clear();
+        for (WebsiteButton websiteButton : websiteButtons){
+            String[] words = websiteButton.getText().split(" ");
+            for (String word: words){
+                if (!word.substring(0, inputText.length() <= word.length() ? inputText.length() : word.length()).toUpperCase().equals(inputText)) continue;
+                shownWebsiteButtons.add(websiteButton);
+                break;
+            }
+        }
     }
 
     //+++++++++++++++++++++++++++++++
@@ -93,9 +134,8 @@ public class Model {
         return stage;
     }
 
-    public List<WebsiteButton> getWebsiteButtons() {
-        websiteButtons = loadData();
-        return websiteButtons;
+    public List<WebsiteButton> getShownWebsiteButtons() {
+        return shownWebsiteButtons;
     }
 
     public void setFileName(String fileName) {
@@ -103,27 +143,20 @@ public class Model {
         this.dataHandler = new SimpleDataHandler(fileName);
     }
 
-    //+++++++++++++++++++++++++++++++
-    //add and remove                +
-    //+++++++++++++++++++++++++++++++
-
-    public void addWebsiteButton(WebsiteButton websiteButton){
-        websiteButtons.add(websiteButton);
-        websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        //add Funktionality: actualise Data and/or Screen
-        saveData(true);
+    public boolean isTempDataChanged() {
+        return tempDataChanged;
     }
 
-    public void addAllWebsiteButtons(List<WebsiteButton> list){
-        for (WebsiteButton websiteButton : list){
-            addWebsiteButton(websiteButton);
-        }
+    public void setInputText(String inputText) {
+        this.inputText = inputText;
+        filterShownWebsiteButtons();
     }
 
-    public void removeWebsiteButton(WebsiteButton websiteButton){
-        websiteButtons.remove(websiteButton);
-        websiteButtons.sort(Comparator.comparing(Labeled::getText));
-        //add Funktionality: actualise Data and/or Screen
-        saveData(true);
+    public void appendInputText(String keyCode) {
+        setInputText(inputText + keyCode);
+    }
+
+    public String getInputText() {
+        return inputText;
     }
 }

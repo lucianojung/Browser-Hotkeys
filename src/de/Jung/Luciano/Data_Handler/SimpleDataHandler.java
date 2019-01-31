@@ -63,15 +63,13 @@ public class SimpleDataHandler implements SimpleDataInterface {
             * the outer list is for various of object-data seperated with a new Line
             */
             for (Object objects : dataList) {
-                bufferedWriter.append(objects.toString() + ",");
+                bufferedWriter.append(objects.toString()).append(",");
                 bufferedWriter.newLine();
             }
             //close bufferedWriter and return
             bufferedWriter.close();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-        } catch (NullPointerException n){
-            n.printStackTrace();
         }
     }
 
@@ -90,18 +88,5 @@ public class SimpleDataHandler implements SimpleDataInterface {
             e.printStackTrace();
         }
         return dataList;
-    }
-
-    //+++++++++++++++++++++++++
-    //getter and setter
-    //+++++++++++++++++++++++++
-
-
-    protected String getFileName() {
-        return fileName;
-    }
-
-    protected void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 }

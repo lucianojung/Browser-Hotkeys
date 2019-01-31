@@ -1,25 +1,19 @@
 package de.Jung.Luciano.View;
 
-import com.sun.deploy.util.URLUtil;
-import com.sun.jndi.toolkit.url.UrlUtil;
-import com.sun.webkit.network.URLs;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import org.omg.CosNaming.NamingContextExtPackage.URLStringHelper;
 
-import javax.print.DocFlavor;
 import java.net.URL;
 import java.util.Optional;
 
 public class WebsiteDialog extends Dialog {
     //Layout with Nodes
-    GridPane gridPane;
-    Label labelName, labelUrl;
-    TextField textFieldName, textFieldUrl;
+    private GridPane gridPane;
+    private TextField textFieldName, textFieldUrl;
 
     //+++++++++++++++++++++++++++++++
     //Constructor                   +
@@ -28,8 +22,8 @@ public class WebsiteDialog extends Dialog {
     public WebsiteDialog() {
         super();
         gridPane = new GridPane();
-        labelName = new Label("Website Name: ");
-        labelUrl = new Label("Website Url: ");
+        Label labelName = new Label("Website Name: ");
+        Label labelUrl = new Label("Website Url: ");
         textFieldName = new TextField();
         textFieldName.setPromptText("Website XY");
         textFieldUrl = new TextField();
@@ -59,8 +53,8 @@ public class WebsiteDialog extends Dialog {
 
         if (!result.isPresent()) return null;
         if (!result.get().equals(ButtonType.OK)) return null;
-        if (textFieldName.getText() == "") return null;
-        if (textFieldUrl.getText() == "") return null;
+        if (textFieldName.getText().equals("")) return null;
+        if (textFieldUrl.getText().equals("")) return null;
         try {
             new URL(textFieldUrl.getText()).toURI();
         } catch (Exception e) {return null;}
@@ -71,11 +65,15 @@ public class WebsiteDialog extends Dialog {
     }
 
     public boolean showRemoveDialog(WebsiteButton websiteButton){
-        this.setTitle(websiteButton != null ? "Want to Remove " + websiteButton.getText() + "?" : "Override Data?");
-        this.getDialogPane().setContent(null);
+        this.setTitle(websiteButton != null ? "Want to Remove " + websiteButton.getText() + "?" : "Save Changes?");
+        this.getDialogPane().setContent(new Label(this.getTitle()));
 
         Optional result = this.showAndWait();
         if (!result.isPresent()) return false;
         return result.get().equals(ButtonType.OK);
+    }
+
+    public boolean showSaveDialog() {
+        return showRemoveDialog(null);
     }
 }

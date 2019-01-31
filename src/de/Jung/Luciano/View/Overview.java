@@ -1,6 +1,7 @@
 package de.Jung.Luciano.View;
 
 import de.Jung.Luciano.Model.Model;
+import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,25 +9,43 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class Overview {
 
+    /*
+    * Main View of the Application
+    * Has a BorderPane as root
+    *   -> Top: MenuBar
+    *   -> Center: FlowPane
+    *       -> AllButtons and addButton
+    *
+    * created by Controller
+    * uses StyleSheet: style.css
+    * has getter for Nodes
+    * has a show()-Method
+    *   -> actualize the Buttons in the FlowPane
+    *   -> shows root in Stage if not shown
+    *
+    * EventListener:
+    *   - flowPane.setOnContextMenuRequested() -> for RightClick Menu
+    *   - addButton.setOnAction() -> fires menuItemAdd
+    */
+
     //Layout
-    BorderPane root;
-    FlowPane flowPane;
-    //MenuBar
-    MenuBar menuBar;
-    Menu menuAction;
-    Menu menuEdit;
-    ContextMenu contextMenuEdit;
-    MenuItem menuItemSave;
-    MenuItem menuItemSaveAs;
-    MenuItem menuItemOpenFile;
-    MenuItem menuItemExit;
-    MenuItem menuItemAdd;
-    MenuItem menuItemEdit;
-    MenuItem menuItemRemove;
+    private BorderPane root;
+    private FlowPane flowPane;
+    //Menus
+    private ContextMenu contextMenuEdit;
+    private MenuItem menuItemSave;
+    private MenuItem menuItemSaveAs;
+    private MenuItem menuItemOpenFile;
+    private MenuItem menuItemExit;
+    private MenuItem menuItemAdd;
+    private MenuItem menuItemEdit;
+    private MenuItem menuItemRemove;
     //others
-    Button addButton;
+    private Button addButton;
 
     public Overview() {
         //set Layouts
@@ -34,9 +53,10 @@ public class Overview {
         flowPane = new FlowPane();
 
         //MenuBar
-        menuBar = new MenuBar();
-        menuAction = new Menu("File");
-        menuEdit = new Menu("Edit");
+        //Menus
+        MenuBar menuBar = new MenuBar();
+        Menu menuAction = new Menu("File");
+        Menu menuEdit = new Menu("Edit");
         contextMenuEdit = new ContextMenu();
         menuItemOpenFile = new MenuItem("Open File");
         menuItemSave = new MenuItem("Save");
@@ -53,15 +73,13 @@ public class Overview {
         root.setTop(menuBar);
 
         addButton = new Button("+");
-        addButton.getStyleClass().add("addButton");
-        addButton.setOnAction(event -> menuItemAdd.fire());
+        addButton.getStyleClass().add("add-button");
         flowPane.getChildren().add(addButton);
 
         //flowPane
         flowPane.setPadding(new Insets(5));
         flowPane.setHgap(5);
         flowPane.setVgap(5);
-        flowPane.setOnContextMenuRequested(event -> contextMenuEdit.show(flowPane, event.getScreenX(), event.getScreenY()));
         root.setCenter(flowPane);
         root.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
 
@@ -71,26 +89,21 @@ public class Overview {
     //other methods                 +
     //+++++++++++++++++++++++++++++++
 
-    public void show(Model model) {
-        flowPane.getChildren().clear();
-        flowPane.getChildren().addAll(model.getWebsiteButtons());
-        flowPane.getChildren().add(addButton);
-
-        Stage stage = model.getStage();
-        if (stage.isShowing()) return;
+    public void show(Stage stage) {
         stage.setTitle("Website Shortcuts");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
     }
 
+    public void refreshView(List<WebsiteButton> websiteButtons){
+        flowPane.getChildren().clear();
+        flowPane.getChildren().addAll(websiteButtons);
+        flowPane.getChildren().add(addButton);
+    }
+
     //+++++++++++++++++++++++++++++++
     //getter and setter             +
     //+++++++++++++++++++++++++++++++
-
-
-    public BorderPane getRoot() {
-        return root;
-    }
 
     public FlowPane getFlowPane() {
         return flowPane;
@@ -124,4 +137,11 @@ public class Overview {
         return menuItemRemove;
     }
 
+    public ContextMenu getContextMenuEdit() {
+        return contextMenuEdit;
+    }
+
+    public Button getAddButton() {
+        return addButton;
+    }
 }

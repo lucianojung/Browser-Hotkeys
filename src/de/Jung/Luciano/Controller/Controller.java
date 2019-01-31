@@ -4,21 +4,24 @@ import de.Jung.Luciano.Model.Model;
 import de.Jung.Luciano.View.Overview;
 import de.Jung.Luciano.View.WebsiteDialog;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.DirectoryChooser;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 
 public class Controller {
     //objects
-    Model model;
-    Overview view;
-    WebsiteDialog dialog;
-    ApplicationFassade fassade;
+    private Model model;
+    private Overview view;
+    private WebsiteDialog dialog;
+    private ApplicationFacade facade;
+    private FileChooser fileChooser;
 
     public Controller(Model model) {
 
@@ -27,47 +30,59 @@ public class Controller {
         this.model = model;
         this.view = new Overview();
         this.dialog = new WebsiteDialog();
-        this.fassade = new ApplicationFassade();
+        this.facade = new ApplicationFacade();
+
+        //config FileChooser
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter fileExtension = new FileChooser.ExtensionFilter("TextFiles", "*.txt");
+        fileChooser.getExtensionFilters().add(fileExtension);
+        fileChooser.setInitialDirectory(new File("."));
+        fileChooser.setInitialFileName("save.txt");
 
         //Listener
-        view.getMenuItemOpenFile().setOnAction(event -> handleOpenFile(event));
-        view.getMenuItemSave().setOnAction(event -> handleSave(event));
-        view.getMenuItemSaveAs().setOnAction(event -> handleSaveAs(event));
-        view.getMenuItemExit().setOnAction(event -> System.exit(0));
-        view.getMenuItemAdd().setOnAction(event -> handleAddWebsite(event));
-        view.getMenuItemEdit().setOnAction(event -> handleEditWebsite(event));
-        view.getMenuItemRemove().setOnAction(event -> handleRemoveWebsite(event));
+        view.getMenuItemOpenFile().setOnAction(this::handleOpenFile);
+        view.getMenuItemSave().setOnAction(this::handleSave);
+        view.getMenuItemSaveAs().setOnAction(this::handleSaveAs);
+        view.getMenuItemExit().setOnAction(event -> model.getStage().fireEvent(new WindowEvent(model.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST)));
+        view.getMenuItemAdd().setOnAction(this::handleAddWebsite);
+        view.getMenuItemEdit().setOnAction(this::handleEditWebsite);
+        view.getMenuItemRemove().setOnAction(this::handleRemoveWebsite);
+        view.getFlowPane().setOnContextMenuRequested(event -> view.getContextMenuEdit().show(view.getFlowPane(), event.getScreenX(), event.getScreenY()));
+        view.getAddButton().setOnAction(this::handleAddWebsite);
+        model.getStage().setOnCloseRequest(event -> handleSave(null));
+        view.getFlowPane().setOnKeyPressed(this::handleKeyPressed);
 
         //show first View (Overview)
-        view.show(model);
+        view.refreshView(model.getShownWebsiteButtons());
+        view.show(model.getStage());
     }
+
 
     //+++++++++++++++++++++++++++++++
     //Event Handler Methods         +
     //+++++++++++++++++++++++++++++++
-
     private void handleOpenFile(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter fileExtension = new FileChooser.ExtensionFilter("TextFiles", "*.txt");
         fileChooser.getExtensionFilters().add(fileExtension);
         File file = fileChooser.showOpenDialog(model.getStage());
         //load Data from File, ?save it?
         if (file == null) return;
         model.setFileName(file.toString()); //loads when constructor called
-        view.show(model);
+        model.loadData();
+        view.refreshView(model.getShownWebsiteButtons());
     }
 
     private void handleSave(ActionEvent event) {
-        model.saveData(true);
+        if (model.isTempDataChanged() && dialog.showSaveDialog())
+            model.saveData();
     }
 
     private void handleSaveAs(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File file = directoryChooser.showDialog(model.getStage());
+        File file = fileChooser.showSaveDialog(model.getStage());
         //save Data in Directory "file"
         if (file == null) return;
-        model.setFileName(file.toString() + "/save.txt");
-        model.saveData(dialog.showRemoveDialog(null));
+        model.setFileName(file.toString());
+        model.saveData();
     }
 
     private void handleAddWebsite(ActionEvent event) {
@@ -79,38 +94,68 @@ public class Controller {
          */
         WebsiteButton websiteButton = dialog.showDialog(new WebsiteButton());
         if (websiteButton == null) return;
-        model.addWebsiteButton(websiteButton);
-        view.show(model);
+        addWebsiteButton(websiteButton);
     }
 
     private void handleEditWebsite(ActionEvent event) {
-        /*
-         * opens a Dialog with the WebsiteButton got from the event*/
-
-        WebsiteButton websiteButton = getChoosenButton();
+        WebsiteButton websiteButton = getChosenButton();
         if (websiteButton == null) return;
 
-        model.removeWebsiteButton(websiteButton);
         WebsiteButton backUpButton = websiteButton;
         websiteButton = dialog.showDialog(websiteButton);
-        model.addWebsiteButton(websiteButton != null ? websiteButton : backUpButton);
-        view.show(model);
+        if (websiteButton == null) return;
+        if (!websiteButton.getText().equals(backUpButton.getText()) || !websiteButton.getUrl().equals(backUpButton.getUrl())) return;
+
+        model.removeWebsiteButton(backUpButton);
+        addWebsiteButton(websiteButton);
     }
 
     private void handleRemoveWebsite(ActionEvent event) {
-        WebsiteButton websiteButton = getChoosenButton();
+        WebsiteButton websiteButton = getChosenButton();
         if (websiteButton == null) return;
-        if (websiteButton != null ? dialog.showRemoveDialog(websiteButton) : false)
+        if (dialog.showRemoveDialog(websiteButton))
             model.removeWebsiteButton(websiteButton);
-        view.show(model);
+        view.refreshView(model.getShownWebsiteButtons());
     }
 
-    private WebsiteButton getChoosenButton() {
+    private void handleKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER){
+            for (WebsiteButton websiteButton : model.getShownWebsiteButtons())
+                websiteButton.fire();
+        }
+        else if (keyEvent.getCode() == KeyCode.BACK_SPACE){
+            int inputLength = model.getInputText().length();
+            if (inputLength <= 0) return;       //otherwise you have a StringIndexOutOfBoundsException
+            model.setInputText(model.getInputText().substring(0, inputLength-1));
+        }
+        else if (keyEvent.getCode() == KeyCode.ESCAPE){
+            model.setInputText("");
+        }
+        else if (keyEvent.getCode() == KeyCode.SHIFT) return;
+        else {
+            model.appendInputText(keyEvent.getCode().toString());
+        }
+        System.out.println("Detect Key pressed. InputTest: " + model.getInputText());
+        view.refreshView(model.getShownWebsiteButtons());
+        if (model.getShownWebsiteButtons().size() == 1)
+            model.getShownWebsiteButtons().get(0).fire();
+    }
+
+    //+++++++++++++++++++++++++++++++
+    //other methods                 +
+    //+++++++++++++++++++++++++++++++
+
+    private WebsiteButton getChosenButton() {
         for (Node node : view.getFlowPane().getChildren()) {
             if (!node.isFocused()) continue;
             return node instanceof WebsiteButton ? (WebsiteButton) node : null;
         }
         return null;
+    }
+
+    private void addWebsiteButton(WebsiteButton websiteButton){
+        model.addWebsiteButton(websiteButton);
+        view.refreshView(model.getShownWebsiteButtons());
     }
 
 }

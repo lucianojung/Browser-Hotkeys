@@ -1,12 +1,25 @@
 .button{
     -fx-text-fill: black;
-    -fx-font: bold 18px "Georgia";
+    -fx-font: bold 16px "Arial";
     -fx-text-alignment: center;
 }
-.addButton{
+.add-button{
      -fx-text-fill: black;
-     -fx-font: bold 20px "Georgia";
+     -fx-font: bold 20px "Arial";
      -fx-text-alignment: center;
      -fx-background-color: white, black, black, darkgrey, lightgrey, white;
      -fx-cell-size: 40, 40;
  }
+
+.menu-item{
+    #-fx-background-color: #d6d6d6;
+}
+
+.menu-bar{
+    -fx-font: bold 12px "Arial";
+    -fx-background-color: #eaeaea;
+}
+
+.menu{
+    #-fx-background-color: #d6d6d6;
+}

@@ -1,6 +1,6 @@
 package de.Jung.Luciano.WebsiteButton;
 
-import de.Jung.Luciano.Controller.ApplicationFassade;
+import de.Jung.Luciano.Controller.ApplicationFacade;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.input.ScrollEvent;
@@ -20,18 +20,12 @@ public class WebsiteButton extends Button {
         super(name);
         this.url = url;
         this.setStyle("-fx-background-color: " + this.getRandomColor());
-        this.getStyleClass().add("button");
         this.setMinSize(BUTTONSIZE, BUTTONSIZE);
 
         //Listener
-        this.setOnAction(event -> handleWebsiteButton(event));
+        ApplicationFacade facade = new ApplicationFacade();
+        this.setOnAction(event -> facade.showWebsite(url));
         this.addEventHandler(ScrollEvent.SCROLL, event -> this.setStyle("-fx-background-color: " + this.getRandomColor()));
-    }
-
-    private void handleWebsiteButton(ActionEvent event) {
-        System.out.println("Open Browser, Search Website: " + this.url);
-        ApplicationFassade fassade = new ApplicationFassade();
-        fassade.showWebsite(url);
     }
 
     @Override
@@ -57,8 +51,7 @@ public class WebsiteButton extends Button {
         }
         while (nextInt < 10000000);
 
-        String color = String.format("#%06x", nextInt);
-        return color;
+        return String.format("#%06x", nextInt);
     }
 
     public String getUrl() {
