@@ -99,10 +99,19 @@ public class WebsiteButton extends Button {
         */
         this.imageUrl = imageUrl;
 
+        if (imageUrl == null || imageUrl.equals("")){
+            this.setGraphic(null);
+            return;
+        }
+
         ImageView imageView = new ImageView(new Image(imageUrl));
         imageView.setFitWidth(16);
         imageView.setFitHeight(16);
         imageView.setPreserveRatio(true);
         this.setGraphic(imageView);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

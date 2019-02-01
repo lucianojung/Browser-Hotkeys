@@ -1,11 +1,3 @@
-C:\Users\Luciano\Dropbox\DiverseProjects\IntelliJProjects\ShortcutsFirefox\save.txt
-Deezer,https://www.deezer.com/de/,null
-Github,https://github.com/lucianojung?tab=repositories,null
-Homepage,https://lucianojung.jimdofree.com/,file:/C:/Users/Luciano/Dropbox/Privat/Website/LJ_Logo2.png
-Jimdo Website Edit,https://cms.e.jimdo.com/app/sea20628f67c63520/p1d9bb7cb297c7d86?safemode=0&cmsEdit=1,null
-Linguee,https://www.linguee.de/deutsch-englisch,null
-Moodle THM,https://cas.thm.de/cas/login?service=https%3A%2F%2Fmoodle.thm.de%2Flogin%2Findex.php%3FauthCAS%3DCAS,null
-Netflix,https://www.netflix.com/browse,null
-Posteo Mail,https://posteo.de/de,null
-Wer ruft an,https://wer-ruftan.de/,null
-Youtube,https://www.youtube.com/feed/subscriptions,null
+save.txt
+Google,https://www.google.de,file:/C:/Users/Luciano/Dropbox/DiverseProjects/IntelliJProjects/ShortcutsFirefox/src/de/Jung/Luciano/images/Blitz.png,
+Homepage,https://lucianojung.jimdofree.com/,https://image.jimcdn.com/app/cms/image/transf/none/path/sea20628f67c63520/image/i4a2de3309741e725/version/1546042346/image.jpg

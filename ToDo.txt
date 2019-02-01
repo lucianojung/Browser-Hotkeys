@@ -1,4 +1,4 @@
-ToDo:
+﻿ToDo:
 
 //+++++++++++++++++++++++++++++++
 //Versiom 2.0                   +
@@ -35,15 +35,16 @@ Optional:
 - first Line in save.txt for alternative saved Place
 - actualize README.md in Branch
 - add useful comments in Code
--> --Iterator--
 - release v.2.1
 
 //+++++++++++++++++++++++++++++++
 //Versiom 2.2                   +
 //+++++++++++++++++++++++++++++++
 
-- remove Images
+- remove Images -> Empty TExtField for Image
+- set Website Images
 - add close when Website open (with save changes dialog!)
+-> --Iterator--
 - settings for example Image Size -> need own model with DataHandler
 - add open Programs instead of only websites
 

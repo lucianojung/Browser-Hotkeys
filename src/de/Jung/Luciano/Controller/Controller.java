@@ -13,7 +13,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
-import java.io.IOException;
+
+/**
+ * @author Luciano Jung
+ * @version 2.1
+ * @param 
+ */
 
 public class Controller {
     //objects
@@ -41,7 +46,7 @@ public class Controller {
         view.getMenuItemOpenFile().setOnAction(this::handleOpenFile);
         view.getMenuItemSave().setOnAction(this::handleSave);
         view.getMenuItemSaveAs().setOnAction(this::handleSaveAs);
-        view.getMenuItemExit().setOnAction(event -> model.getStage().fireEvent(new WindowEvent(model.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST)));   //fires WindowCloseRequest-Event of Stage
+        view.getMenuItemExit().setOnAction(event -> handleExit());
         view.getMenuItemAdd().setOnAction(this::handleAddWebsite);
         view.getMenuItemEdit().setOnAction(this::handleEditWebsite);
         view.getMenuItemRemove().setOnAction(this::handleRemoveWebsite);
@@ -114,11 +119,13 @@ public class Controller {
          * -> load Data from default
          * -> saves data in default with temp fileName
          */
-        handleSave(null);
+        handleSave(new ActionEvent());
         String tempFileName = model.getFileName();
         model.setFileName("save.txt");
         model.loadData();
         model.saveData(tempFileName);
+        System.out.println("All Done! Exit Programm!");
+        System.exit(0);
     }
 
     private void handleAddWebsite(ActionEvent event) {
@@ -196,7 +203,7 @@ public class Controller {
                 if (!(websiteButton instanceof Button)) continue;
                 ((Button) websiteButton).fire();
             }
-            System.exit(0);
+            handleExit();
         } else if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
             int inputLength = model.getInputText().length();
             if (inputLength <= 0)
@@ -214,7 +221,7 @@ public class Controller {
         if (model.getShownWebsiteButtons().size() != 1) return;
         if (!(model.getShownWebsiteButtons().get(0) instanceof Button)) return;
         ((Button) model.getShownWebsiteButtons().get(0)).fire();
-        System.exit(0);
+        handleExit();
     }
 
     //+++++++++++++++++++++++++++++++
@@ -222,8 +229,9 @@ public class Controller {
     //+++++++++++++++++++++++++++++++
 
     private WebsiteButton getChosenButton() {
+
         /*
-         * returns focused Button
+         * return focused WebsiteButton
          * if nothing focused returns first Button
          */
         for (Node node : view.getFlowPane().getChildren()) {
