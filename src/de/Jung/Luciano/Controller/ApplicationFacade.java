@@ -13,7 +13,7 @@ public class ApplicationFacade extends Application {
     */
 
     @Override
-    public void start(Stage primaryStage) throws Exception {}
+    public void start(Stage primaryStage) throws Exception { System.exit(0); }
 
     public void showWebsite(String url){
         getHostServices().showDocument(url);

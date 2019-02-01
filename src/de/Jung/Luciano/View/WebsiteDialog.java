@@ -3,8 +3,6 @@ package de.Jung.Luciano.View;
 import de.Jung.Luciano.WebsiteButton.WebsiteButton;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -13,13 +11,13 @@ import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 
+
 public class WebsiteDialog extends Dialog {
     //Layout with Nodes
     private GridPane gridPane;
-    private TextField textFieldName, textFieldUrl;
+    private TextField textFieldName, textFieldUrl, textFieldImageUrl;
     private Label labelImageUrl;
     private Button buttonAddImage;
-    private String imageUrl;
 
     //+++++++++++++++++++++++++++++++
     //Constructor                   +
@@ -33,16 +31,19 @@ public class WebsiteDialog extends Dialog {
         textFieldName = new TextField();
         textFieldName.setPromptText("Website XY");
         textFieldUrl = new TextField();
-        textFieldUrl.setPromptText("www.thePage.de");
+        textFieldUrl.setPromptText("www.url.de");
         labelImageUrl = new Label("Website Image");
-        buttonAddImage = new Button("Add Image");
+        textFieldImageUrl = new TextField();
+        textFieldImageUrl.setPromptText("C:/Path or www.url.png");
+        buttonAddImage = new Button("+");
 
         gridPane.add(labelName, 0, 0);
         gridPane.add(labelUrl, 0, 1);
         gridPane.add(labelImageUrl, 0, 2);
-        gridPane.add(textFieldName, 1, 0);
-        gridPane.add(textFieldUrl, 1, 1);
-        gridPane.add(buttonAddImage, 1, 2);
+        gridPane.add(textFieldName, 1, 0, 2, 1);
+        gridPane.add(textFieldUrl, 1, 1, 2, 1);
+        gridPane.add(textFieldImageUrl, 1, 2);
+        gridPane.add(buttonAddImage, 2, 2);
 
         this.getDialogPane().getButtonTypes().add(0, ButtonType.OK);
         this.getDialogPane().getButtonTypes().add(1, ButtonType.CANCEL);
@@ -65,8 +66,7 @@ public class WebsiteDialog extends Dialog {
         if (file == null) return;
         if (!file.isFile()) return;
 
-        imageUrl = file.toURI().toString();
-        buttonAddImage.setText(file.getName());
+        textFieldImageUrl.setText(file.toURI().toString());
     }
 
     //+++++++++++++++++++++++++++++++
@@ -77,6 +77,7 @@ public class WebsiteDialog extends Dialog {
         this.setTitle(websiteButton.getUrl() == null ? "Add new Website" : "Edit Website");
         this.textFieldName.setText(websiteButton.getText());
         this.textFieldUrl.setText(websiteButton.getUrl());
+        this.textFieldImageUrl.setText(websiteButton.getImageUrl());
         this.getDialogPane().setContent(gridPane);
 
 
@@ -92,8 +93,7 @@ public class WebsiteDialog extends Dialog {
 
         websiteButton.setText(textFieldName.getText());
         websiteButton.setUrl(textFieldUrl.getText());
-        if (!buttonAddImage.getText().equals("Add Image"))
-            websiteButton.setImageUrl(imageUrl);
+        websiteButton.setImageUrl(textFieldImageUrl.getText());
         return websiteButton;
     }
 
@@ -104,6 +104,7 @@ public class WebsiteDialog extends Dialog {
         Optional result = this.showAndWait();
         if (!result.isPresent()) return false;
         return result.get().equals(ButtonType.OK);
+
     }
 
     public boolean showSaveDialog() {
