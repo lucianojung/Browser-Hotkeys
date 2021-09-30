@@ -1,10 +1,12 @@
 
 # Browser Hotkeys 
-![Alt text](src/de/jung/luciano/images/LJ_Logo2.png)
+![Browser Hotkeys](https://user-images.githubusercontent.com/33691403/135430555-58fa5e59-794b-4af4-a075-ef21d5ef2063.png)
+
 
 ###Here is an Example of the running Programm:
 
-![Alt text](src/de/jung/luciano/images/AppExample.png)
+![Browser Hotkeys2](https://user-images.githubusercontent.com/33691403/135430575-989b9131-e628-43c1-bf39-a685747472e8.png)
+
 
 ###JavaFX Project to open saved Urls in your Browser
 
